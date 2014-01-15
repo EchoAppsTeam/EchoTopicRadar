@@ -1,0 +1,32 @@
+{
+	"id": "{%=manifest.id%}",
+	"name": "{%=manifest.name%}",
+	"description": "Echo TopicRadar reference app",
+	"app_version": "1.0.0",
+	"cloudapp_protocol_version": "1.0.0",
+	"developer": {
+		"id": "echo",
+		"name": "Echo",
+		"url": "http://www.aboutecho.com",
+		"email": "solutions@aboutecho.com",
+		"icon": "http://cdn.echoenabled.com/images/echo.png"
+	},
+	"dashboards": [{
+		"id": "instances",
+		"title": "Instances",
+		"script": "{%=baseURL%}/dashboard.js",
+		"component": "Echo.Apps.TopicRadar.Dashboard",
+		"type": "instances"
+	}, {
+		"id": "docs",
+		"type": "external",
+		"title": "Documentation",
+		"config": {
+			"src": "http://emb.echoplatform.com/topicradar/docs/overview"
+		}
+	}],
+	"client_widget": {
+		"component": "Echo.Apps.TopicRadar",
+		"script": "{%=baseURL%}/app.js"
+	}
+}
