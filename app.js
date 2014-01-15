@@ -28,9 +28,11 @@ radar.init = function() {
 
 radar.renderers.tabs = function(element) {
 	var self = this;
-	// TODO hide tabs if there is only one tab in config
 	element.empty();
 	var tabs = this.config.get("tabs");
+	if (tabs.length <= 1) {
+		element.hide();
+	}
 	new Echo.GUI.Tabs({
 		"target": element,
 		"panels": this.view.get("panels"),
