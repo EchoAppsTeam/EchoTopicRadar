@@ -28,13 +28,10 @@
 						"component": "Echo.Apps.Conversations",
 						"script": "http://cdn.echoenabled.com/apps/echo/conversations/app.js",
 						"config": {
-							"auth": {
-								"allowAnonymousSubmission": true
-							},
+							"targetURL": "http://echoplatform.com/test/conversations",
 							"dependencies": {
-								"StreamServer": {
-									"appkey": "echo.jssdk.demo.aboutecho.com"
-								}
+								"Janrain": {"appId": "echo"},
+								"StreamServer": {"appkey": "echo.jssdk.demo.aboutecho.com"}
 							}
 						}
 					}, {
