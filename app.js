@@ -15,6 +15,9 @@ radar.templates.main =
 		'<div class="{class:panels}"></div>' +
 	'</div>';
 
+radar.templates.panel =
+	'<div class="{class:panel} {class:panel}-{data:tabIndex}"></div>';
+
 radar.templates.column =
 	'<div class="{class:column}"></div>';
 
@@ -42,7 +45,12 @@ radar.renderers.tabs = function(element) {
 				"label": tab.title,
 				"extraClass": self.cssPrefix + "tab-" + tabIndex,
 				"panel": (function(columns) {
-					var panel = $("<div>").addClass(self.cssPrefix + "tabPanel-" + tabIndex);
+					var panel = $(self.substitute({
+						"template": self.templates.panel,
+						"data": {
+							"tabIndex": tabIndex
+						}
+					}));
 					$.each(columns || [], function(columnIndex, column) {
 						var columnContainer = $(self.substitute({"template": self.templates.column}));
 						columnContainer.addClass(self.cssPrefix + "column-" + columnIndex);
@@ -117,6 +125,8 @@ radar.dependencies = [{
 }];
 
 radar.css =
+	'.{class:panel} { table-layout: fixed; }' +
+	'.echo-sdk-ui .{class:panels}.tab-content > .active { display: table; table-layout: fixed; width: 100%; }' +
 	'.{class:column} { display: table-cell; vertical-align: top; }';
 
 Echo.App.create(radar);
