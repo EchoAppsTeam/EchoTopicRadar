@@ -17,7 +17,10 @@ module.exports = function(grunt) {
 	var sources = {
 		"js": [
 			"app.js",
-			"dashboard.js"
+			"dashboard.js",
+			"app-custom.js",
+			"dashboard-custom-ecl.js",
+			"dashboard/*.js"
 		],
 		"images": [
 			"images/**"
@@ -130,6 +133,13 @@ module.exports = function(grunt) {
 				],
 				"dest": "<%= dirs.build %>/dashboard.js"
 			},
+			"dashboard-custom-ecl": {
+				"src": [
+					"<%= dirs.build %>/dashboard-custom-ecl.js",
+					"<%= dirs.build%>/dashboard/*.js"
+				],
+				"dest": "<%= dirs.build %>/dashboard-custom-ecl.js"
+			},
 			"app": {
 				"src": [
 					"<%= dirs.build %>/app.js",
@@ -137,6 +147,14 @@ module.exports = function(grunt) {
 					"<%= dirs.build %>/plugins/*.js"
 				],
 				"dest": "<%= dirs.build %>/app.js"
+			},
+			"app-custom": {
+				"src": [
+					"<%= dirs.build %>/app-custom.js",
+					"<%= dirs.build %>/controls/*.js",
+					"<%= dirs.build %>/plugins/*.js"
+				],
+				"dest": "<%= dirs.build %>/app-custom.js"
 			}
 		},
 		"uglify": {
