@@ -20,6 +20,7 @@ module.exports = function(grunt) {
 			"dashboard.js",
 			"app-custom.js",
 			"dashboard-custom-ecl.js",
+			"dashboard-custom.js",
 			"dashboard/*.js"
 		],
 		"images": [
@@ -139,6 +140,13 @@ module.exports = function(grunt) {
 					"<%= dirs.build%>/dashboard/*.js"
 				],
 				"dest": "<%= dirs.build %>/dashboard-custom-ecl.js"
+			},
+			"dashboard-custom": {
+				"src": [
+					"<%= dirs.build %>/dashboard-custom.js",
+					"<%= dirs.build%>/dashboard/*.js"
+				],
+				"dest": "<%= dirs.build %>/dashboard-custom.js"
 			},
 			"app": {
 				"src": [
