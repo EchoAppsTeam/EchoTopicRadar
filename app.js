@@ -38,12 +38,14 @@ radar.renderers.tabs = function(element) {
 		"panels": this.view.get("panels"),
 		"entries": $.map(tabs, function(tab, tabIndex) {
 			return {
-				"id": "tab_" + tabIndex,
+				"id": "tab-" + tabIndex,
 				"label": tab.title,
+				"extraClass": self.cssPrefix + "tab-" + tabIndex,
 				"panel": (function(columns) {
-					var panel = $("<div>");
+					var panel = $("<div>").addClass(self.cssPrefix + "tabPanel-" + tabIndex);
 					$.each(columns || [], function(columnIndex, column) {
 						var columnContainer = $(self.substitute({"template": self.templates.column}));
+						columnContainer.addClass(self.cssPrefix + "column-" + columnIndex);
 						self.view.render({
 							"name": "_column",
 							"target": columnContainer,
@@ -63,7 +65,7 @@ radar.renderers._column = function(element, extra) {
 	var self = this;
 	var column = extra && extra.column;
 	$.each(column.instances || [], function(instanceIndex, instance) {
-		var container = $("<div>");
+		var container = $("<div>").addClass(self.cssPrefix + "instance-" + instanceIndex);
 		element.append(container);
 		self.initComponent({
 			"id": "tab_" + Echo.Utils.getUniqueString(),
