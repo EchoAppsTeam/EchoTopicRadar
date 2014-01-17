@@ -7,8 +7,36 @@ var dashboard = Echo.AppServer.Dashboard.manifest("Echo.Apps.TopicRadar.Dashboar
 
 dashboard.inherits = Echo.Utils.getComponent("Echo.AppServer.Dashboards.AppSettings");
 
-dashboard.config = {
-	"ecl": []
+dashboard.templates.main =
+	'<div class="{class:container}"></div>';
+
+dashboard.events = {
+	"Echo.Apps.TopicRadar.Dashboard.List.onItemAdd": function() {
+		this._configChanged();
+	},
+	"Echo.Apps.TopicRadar.Dashboard.Item.onRemove": function() {
+		this._configChanged();
+	},
+	"Echo.Apps.TopicRadar.Dashboard.Item.onChange": function() {
+		this._configChanged();
+	}
+};
+
+dashboard.renderers.container = function(element) {
+	this.tabList = new Echo.Apps.TopicRadar.Dashboard.TabList({
+		"target": element,
+		"context": this.config.get("context"),
+		"cdnBaseURL": this.config.get("cdnBaseURL"),
+		"dashboard": this.config.getAsHash(),
+		"data": {
+			"value": this.get("data.instance.config")
+		}
+	});
+	return element;
+};
+
+dashboard.methods._configChanged = function() {
+	this.update({"config": this.tabList.value()});
 };
 
 Echo.AppServer.Dashboard.create(dashboard);
