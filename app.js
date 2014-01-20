@@ -69,6 +69,9 @@ radar.renderers.tabs = function(element) {
 radar.renderers._column = function(element, extra) {
 	var self = this;
 	var column = extra && extra.column;
+	if (column.width) {
+		element.css("width", column.width);
+	}
 	$.each(column.instances || [], function(instanceIndex, instance) {
 		var container = $("<div>").addClass(self.cssPrefix + "instance-" + instanceIndex);
 		element.append(container);
