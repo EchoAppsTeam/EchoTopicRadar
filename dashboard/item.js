@@ -78,6 +78,7 @@ item.methods._initConfigurator = function(callback) {
 };
 
 item.css =
+	'.{class:container} { margin-bottom: 10px; }' +
 	'.{class:title} { color: #787878; }';
 
 Echo.AppServer.Dashboard.create(item);
