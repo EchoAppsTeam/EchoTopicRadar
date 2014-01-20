@@ -72,8 +72,15 @@ instances.methods._prepareAppsList = function(subscriptions) {
 	var self = this;
 	subscriptions = subscriptions || [];
 	return Echo.Utils.foldl([], subscriptions, function(subscription, acc) {
+		if (!subscription.app) return;
+
 		var dashboard = self._getInstancesDashboard(subscription.app.dashboards);
-		if (dashboard && subscription.app) {
+		var endpoints = subscription.app.endpoints || {};
+		if (
+			dashboard
+			&& !endpoints["instance/add"]
+			&& !endpoints["instance/remove"]
+		) {
 			acc.push({
 				"app": subscription.app,
 				"dashboard": dashboard
