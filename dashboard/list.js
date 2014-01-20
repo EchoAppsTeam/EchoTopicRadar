@@ -54,7 +54,7 @@ list.renderers.newItem = function(element) {
 		.addClass("echo-clickable")
 		.on("click", function() {
 			self.addItem();
-	});
+		});
 };
 
 list.methods.addItem = function(data) {

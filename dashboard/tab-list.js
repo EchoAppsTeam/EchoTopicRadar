@@ -8,14 +8,14 @@ var tabs = Echo.AppServer.Dashboard.manifest("Echo.Apps.TopicRadar.Dashboard.Tab
 tabs.inherits = Echo.Utils.getComponent("Echo.Apps.TopicRadar.Dashboard.List");
 
 tabs.labels = {
-  "addNewItem": "Add new tab",
+	"addNewItem": "Add new tab",
 	"defaultItemTitle": "Tab {index}",
 	"removePopupList": "Delete this tab"
 };
 
 tabs.config = {
 	"item": {
-	  "component": "Echo.Apps.TopicRadar.Dashboard.TabList.Tab"
+		"component": "Echo.Apps.TopicRadar.Dashboard.TabList.Tab"
 	}
 };
 

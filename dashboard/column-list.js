@@ -8,7 +8,7 @@ var columns = Echo.AppServer.Dashboard.manifest("Echo.Apps.TopicRadar.Dashboard.
 columns.inherits = Echo.Utils.getComponent("Echo.Apps.TopicRadar.Dashboard.List");
 
 columns.labels = {
-  "addNewItem": "Add new column",
+	"addNewItem": "Add new column",
 	"defaultItemTitle": "Column {index}"
 };
 

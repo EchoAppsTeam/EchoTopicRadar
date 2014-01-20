@@ -43,11 +43,11 @@ item.renderers.options = function(element) {
 };
 
 item.methods.remove = function() {
-  this.events.publish({
-    "topic": "onRemove",
-    "inherited": true,
+	this.events.publish({
+		"topic": "onRemove",
+		"inherited": true,
 		"data": this.get("data")
-  });
+	});
 };
 
 item.methods.value = function() {
