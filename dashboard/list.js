@@ -59,15 +59,16 @@ list.renderers.newItem = function(element) {
 list.methods.addItem = function(data) {
 	var self = this;
 	var items = this.get("items");
-	items.push(this._initItem(
+	this._initItem(
 		$.extend(true, {"title": this.labels.get("defaultItemTitle", {"index": items.length + 1})}, data),
 		function() {
+			items.push(this);
 			self.events.publish({
 				"topic": "onItemAdd",
 				"inherited": true
 			});
 		}
-	));
+	);
 	this.view.render({"name": "list"});
 };
 
@@ -115,13 +116,13 @@ list.methods._initItem = function(data, callback) {
 			"dashboard": this.config.get("dashboard"),
 			"data": data,
 			"ready": function() {
-				callback && callback();
+				callback && callback.call(this);
 			}
 		});
 };
 
 list.css =
-	'.{class:newItem} { background: left top no-repeat url({config:cdnBaseURL.apps.appserver}/images/plus.png); }' +
+	'.{class:newItem} { background: left center no-repeat url({config:cdnBaseURL.apps.appserver}/images/plus.png); }' +
 	'.{class:newItem} { margin-left: 26px; margin-top: 10px; padding-left: 23px; font: 12px Arial; font-weight: bold; color: #787878; }';
 
 Echo.AppServer.Dashboard.create(list);

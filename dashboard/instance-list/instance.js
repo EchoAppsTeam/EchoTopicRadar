@@ -11,9 +11,9 @@ instance.config = {
 	"ecl": [{
 		"component": "Input",
 		"type": "string",
-		"name": "qweqweqwe",
+		"name": "title",
 		"config": {
-			"title": "aaaaa"
+			"title": "Title"
 		}
 	}]
 };

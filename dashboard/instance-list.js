@@ -45,7 +45,28 @@ instances.init = function() {
 };
 
 instances.renderers.newItem = function(element) {
-	return element.empty().append("TODO"); // TODO
+	var self = this;
+
+	element.empty();
+	new Echo.GUI.Dropdown({
+		"target": element,
+		"title": this.labels.get("addNewItem"),
+		"entries": $.map(this.get("apps"), function(app) {
+			return {
+				"title": Echo.Utils.get(app, "app.title"),
+				"handler": function() {
+					self.addItem($.extend(true, app.app, {
+						"dashboard": app.dashboard
+					}));
+				}
+			};
+		})
+	});
+	return element;
+};
+
+instances.methods.value = function() {
+	return this.parent();
 };
 
 instances.methods._prepareAppsList = function(subscriptions) {
@@ -53,7 +74,7 @@ instances.methods._prepareAppsList = function(subscriptions) {
 	subscriptions = subscriptions || [];
 	return Echo.Utils.foldl([], subscriptions, function(subscription, acc) {
 		var dashboard = self._getInstancesDashboard(subscription.app.dashboards);
-		if (dashboard) {
+		if (dashboard && subscription.app) {
 			acc.push({
 				"app": subscription.app,
 				"dashboard": dashboard
@@ -67,6 +88,14 @@ instances.methods._getInstancesDashboard = function(dashboards) {
 		return dashboard.type === "instances";
 	})[0];
 };
+
+instances.css =
+	'.echo-sdk-ui .{class:newItem} .dropdown-toggle,' +
+	'.echo-sdk-ui .{class:newItem} .open .dropdown-toggle:focus,' +
+	'.echo-sdk-ui .{class:newItem} .open .dropdown-toggle:active,' +
+	'.echo-sdk-ui .{class:newItem} .open .dropdown-toggle:link' +
+	'  { font: 12px Arial; font-weight: bold; color: #787878; text-decoration: none; }' +
+	'.echo-sdk-ui .{class:newItem} > ul { margin-left: 0px; }';
 
 Echo.AppServer.Dashboard.create(instances);
 
