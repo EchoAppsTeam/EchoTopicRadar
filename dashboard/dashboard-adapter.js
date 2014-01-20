@@ -18,14 +18,6 @@ adapter.config = {
 	}
 };
 
-adapter.config.normalizer = {
-	"dashboard": function(obj) {
-		var instanceConfigKey = "config.data.instance.config";
-		Echo.Utils.set(obj, instanceConfigKey, Echo.Utils.get(obj, instanceConfigKey + "." + this.get("name")));
-		return obj;
-	}
-};
-
 adapter.init = function() {
 	var self = this;
 	Echo.Loader.download([{

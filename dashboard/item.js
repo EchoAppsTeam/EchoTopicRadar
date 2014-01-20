@@ -12,7 +12,8 @@ item.events = {
 		this.set("data." + data.name, data.values.current);
 		this.view.render({"name": "title"});
 		this.events.publish({
-			"topic": "onChange"
+			"topic": "onChange",
+			"inherited": true
 		});
 		return {"stop": ["bubble", "propagation"]};
 	}

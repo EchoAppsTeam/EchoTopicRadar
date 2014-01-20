@@ -55,18 +55,18 @@ instances.renderers.newItem = function(element) {
 			return {
 				"title": Echo.Utils.get(app, "app.title"),
 				"handler": function() {
-					self.addItem($.extend(true, app.app, {
+					self.addItem({
+						"title": Echo.Utils.get(app, "app.title"),
+						"component": Echo.Utils.get(app, "app.clientWidget.component"),
+						"script": Echo.Utils.get(app, "app.clientWidget.script"),
+						"scripts": Echo.Utils.get(app, "app.clientWidget.scripts"),
 						"dashboard": app.dashboard
-					}));
+					});
 				}
 			};
 		})
 	});
 	return element;
-};
-
-instances.methods.value = function() {
-	return this.parent();
 };
 
 instances.methods._prepareAppsList = function(subscriptions) {

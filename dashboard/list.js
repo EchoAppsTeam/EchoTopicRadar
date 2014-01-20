@@ -67,9 +67,9 @@ list.methods.addItem = function(data) {
 				"topic": "onItemAdd",
 				"inherited": true
 			});
+			self.view.render({"name": "list"});
 		}
 	);
-	this.view.render({"name": "list"});
 };
 
 list.methods.removeItem = function(id) {
