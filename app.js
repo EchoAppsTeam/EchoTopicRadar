@@ -22,11 +22,8 @@ radar.templates.column =
 	'<div class="{class:column}"></div>';
 
 radar.init = function() {
-	// preload inner application scripts
-	this._loadDependentApps(function() {
-		this.render();
-		this.ready();
-	});
+	this.render();
+	this.ready();
 };
 
 radar.renderers.tabs = function(element) {
@@ -75,46 +72,14 @@ radar.renderers._column = function(element, extra) {
 	$.each(column.instances || [], function(instanceIndex, instance) {
 		var container = $("<div>").addClass(self.cssPrefix + "instance-" + instanceIndex);
 		element.append(container);
-		self.initComponent({
-			"id": "tab_" + Echo.Utils.getUniqueString(),
-			"component": instance.component,
-			"config": $.extend(true, {
-				"target": container
-			}, instance.config)
-		});
+		Echo.Loader.initApplication($.extend(true, {
+			"config": {
+				"target": container,
+				"context": self.config.get("context")
+			}
+		}, instance));
 	});
 	return element.addClass(this.cssPrefix + "column");
-};
-
-radar.methods._loadDependentApps = function(callback) {
-	var self = this;
-	var resources = [];
-	$.map(this.config.get("tabs"), function(tab) {
-		$.map(tab.columns || [], function(column) {
-			$.map(column.instances || [], function(instance) {
-				resources.push({
-					"url": self._getAppScriptURL(instance),
-					"component": instance.component
-				});
-			});
-		});
-	});
-	Echo.Loader.download(resources, function() {
-		callback && callback.call(self);
-	});
-};
-
-// TODO the code below is copied from Echo.Canvas class.
-// Maybe we should use Echo.Canvas in this application (instead if using initComponent) ?
-radar.methods._getAppScriptURL = function(config) {
-	if (!config.scripts) return config.script;
-	var isSecure, script = {
-		"dev": config.scripts.dev || config.scripts.prod,
-		"prod": config.scripts.prod || config.scripts.dev
-	}[Echo.Loader.isDebug() ? "dev" : "prod"];
-	if (typeof script === "string") return script;
-	isSecure = /^https/.test(window.location.protocol);
-	return script[isSecure ? "secure" : "regular"];
 };
 
 radar.dependencies = [{
