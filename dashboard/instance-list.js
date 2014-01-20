@@ -7,7 +7,6 @@ var instances = Echo.AppServer.Dashboard.manifest("Echo.Apps.TopicRadar.Dashboar
 
 instances.inherits = Echo.Utils.getComponent("Echo.Apps.TopicRadar.Dashboard.List");
 
-// TODO rewrite all labels (removePupupHint, etc.)
 instances.labels = {
   "addNewItem": "Add new instance",
 	"defaultItemTitle": "Instance {index}",

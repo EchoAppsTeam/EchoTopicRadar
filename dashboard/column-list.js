@@ -7,7 +7,6 @@ var columns = Echo.AppServer.Dashboard.manifest("Echo.Apps.TopicRadar.Dashboard.
 
 columns.inherits = Echo.Utils.getComponent("Echo.Apps.TopicRadar.Dashboard.List");
 
-// TODO rewrite all labels (removePupupHint, etc.)
 columns.labels = {
   "addNewItem": "Add new column",
 	"defaultItemTitle": "Column {index}"

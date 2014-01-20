@@ -34,7 +34,6 @@ instance.methods.getECL = function() {
 	Echo.Utils.set(rootDashboard, "data.instance.config", this.get("data.config", {}));
 	// TODO get rid of this (use placeholders)
 	ecl[0].config = {
-		"title": "inner dashboard", // TODO rename
 		"component": dashboard.component,
 		"url": this.substitute({"template": dashboard.script}),
 		"dashboard": {

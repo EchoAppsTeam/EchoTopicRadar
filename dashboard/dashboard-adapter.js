@@ -27,7 +27,6 @@ adapter.init = function() {
 		"url": this.config.get("dashboard.url"),
 		"component": this.config.get("dashboard.component")
 	}], function() {
-		self.set("val", self.config.get("dashboard.config.data.instance.config"));
 		self.render();
 	});
 };

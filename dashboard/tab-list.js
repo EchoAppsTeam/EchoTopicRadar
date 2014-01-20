@@ -7,7 +7,6 @@ var tabs = Echo.AppServer.Dashboard.manifest("Echo.Apps.TopicRadar.Dashboard.Tab
 
 tabs.inherits = Echo.Utils.getComponent("Echo.Apps.TopicRadar.Dashboard.List");
 
-// TODO rewrite all labels (removePupupHint, etc.)
 tabs.labels = {
   "addNewItem": "Add new tab",
 	"defaultItemTitle": "Tab {index}",

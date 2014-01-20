@@ -20,7 +20,8 @@ list.labels = {
 };
 
 list.vars = {
-	"items": []
+	"items": [],
+	"itemsCounter": 0
 };
 
 list.config = {
@@ -60,7 +61,7 @@ list.methods.addItem = function(data) {
 	var self = this;
 	var items = this.get("items");
 	this._initItem(
-		$.extend(true, {"title": this.labels.get("defaultItemTitle", {"index": items.length + 1})}, data),
+		$.extend(true, {}, data),
 		function() {
 			items.push(this);
 			self.events.publish({
@@ -114,7 +115,9 @@ list.methods._initItem = function(data, callback) {
 			"context": this.config.get("context"),
 			"cdnBaseURL": this.config.get("cdnBaseURL"),
 			"dashboard": this.config.get("dashboard"),
-			"data": data,
+			"data": $.extend(true, data, {
+				"title": data.title || this.labels.get("defaultItemTitle", {"index": ++this.itemsCounter})
+			}),
 			"ready": function() {
 				callback && callback.call(this);
 			}
