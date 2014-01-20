@@ -10,7 +10,8 @@ tabs.inherits = Echo.Utils.getComponent("Echo.Apps.TopicRadar.Dashboard.List");
 // TODO rewrite all labels (removePupupHint, etc.)
 tabs.labels = {
   "addNewItem": "Add new tab",
-	"defaultItemTitle": "Tab {index}"
+	"defaultItemTitle": "Tab {index}",
+	"removePopupList": "Delete this tab"
 };
 
 tabs.config = {

@@ -33,6 +33,10 @@ tab.config = {
 	}]
 };
 
+tab.labels = {
+	"removePopupHint": "Delete this tab"
+};
+
 tab.init = function() {
 	this.parent();
 };
@@ -43,6 +47,9 @@ tab.methods.getECL = function() {
 	ecl[1].items[0].config.dashboard = this.config.get("dashboard");
 	return ecl;
 };
+
+tab.css =
+	'.{class:content} .echo-appserver-controls-configurator-item-container .echo-appserver-controls-configurator-items-group-value { margin-right: 0px; }';
 
 Echo.AppServer.Dashboard.create(tab);
 

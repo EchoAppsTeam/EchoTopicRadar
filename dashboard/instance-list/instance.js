@@ -7,6 +7,10 @@ var instance = Echo.AppServer.Dashboard.manifest("Echo.Apps.TopicRadar.Dashboard
 
 instance.inherits = Echo.Utils.getComponent("Echo.Apps.TopicRadar.Dashboard.Item");
 
+instance.labels = {
+	"removePopupHint": "Delete this instance"
+};
+
 instance.config = {
 	"ecl": [{
 		"component": "Input", // TODO for some reason, this field is 'Instances' always.

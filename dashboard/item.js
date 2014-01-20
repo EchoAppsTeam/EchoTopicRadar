@@ -7,6 +7,11 @@ var item = Echo.AppServer.Dashboard.manifest("Echo.Apps.TopicRadar.Dashboard.Ite
 
 item.inherits = Echo.Utils.getComponent("Echo.AppServer.Controls.Bundler.Item");
 
+item.labels = {
+	"removePopupHeader": "Confirm Delete",
+	"removePopupContent": "Are you sure you want to delete '{data:title}'?"
+};
+
 item.events = {
 	"Echo.AppServer.Controls.Configurator.onItemChange": function(_, data) {
 		this.set("data." + data.name, data.values.current);

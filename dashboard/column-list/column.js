@@ -7,6 +7,10 @@ var column = Echo.AppServer.Dashboard.manifest("Echo.Apps.TopicRadar.Dashboard.C
 
 column.inherits = Echo.Utils.getComponent("Echo.Apps.TopicRadar.Dashboard.Item");
 
+column.labels = {
+	"removePopupHint": "Delete this column"
+};
+
 column.config = {
 	"ecl": [{
 				"component": "Input",
