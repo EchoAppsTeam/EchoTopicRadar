@@ -13,13 +13,6 @@ instance.labels = {
 
 instance.config = {
 	"ecl": [{
-		"component": "Input", // TODO for some reason, this field is 'Instances' always.
-		"type": "string",
-		"name": "title",
-		"config": {
-			"title": "Title"
-		}
-	}, {
 		"component": "Echo.Apps.TopicRadar.Dashboard.DashboardAdapter",
 		"type": "object",
 		"name": "config",
@@ -40,7 +33,7 @@ instance.methods.getECL = function() {
 	// replace root dashboard instance config with current app config 
 	Echo.Utils.set(rootDashboard, "data.instance.config", this.get("data.config", {}));
 	// TODO get rid of this (use placeholders)
-	ecl[1].config = {
+	ecl[0].config = {
 		"title": "inner dashboard", // TODO rename
 		"component": dashboard.component,
 		"url": this.substitute({"template": dashboard.script}),

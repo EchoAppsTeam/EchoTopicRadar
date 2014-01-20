@@ -7,7 +7,7 @@ if (Echo.AppServer.App.isDefined("Echo.Apps.TopicRadar.Dashboard.DashboardAdapte
 
 var adapter = Echo.AppServer.App.manifest("Echo.Apps.TopicRadar.Dashboard.DashboardAdapter");
 
-adapter.inherits = Echo.Utils.getComponent("Echo.AppServer.Controls.Configurator.Items.Group");
+adapter.inherits = Echo.Utils.getComponent("Echo.AppServer.Controls.Configurator.Item");
 
 adapter.config = {
 	"name": undefined,
@@ -17,6 +17,9 @@ adapter.config = {
 		"config": {}
 	}
 };
+
+adapter.templates.main =
+	'<div class="{class:content}"></div>';
 
 adapter.init = function() {
 	var self = this;

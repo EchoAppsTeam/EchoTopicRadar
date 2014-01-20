@@ -13,28 +13,12 @@ column.labels = {
 
 column.config = {
 	"ecl": [{
-				"component": "Input",
-				"name": "title",
-				"type": "string",
-				"config": {
-					"title": "Title"
-				}
-			}, {
-				"component": "Group",
-				"name": "instancesGroup",
-				"type": "empty",
-				"config": {
-					"title": "Instances"
-				},
-				"items": [{
-					"component": "Echo.Apps.TopicRadar.Dashboard.InstanceList",
-					"name": "instances",
-					"type": "object",
-					"config": {
-						"dashboard": undefined
-					}
-				}]
-
+		"component": "Echo.Apps.TopicRadar.Dashboard.InstanceList",
+		"name": "instances",
+		"type": "object",
+		"config": {
+			"dashboard": undefined
+		}
 	}]
 };
 
@@ -45,7 +29,7 @@ column.init = function() {
 column.methods.getECL = function() {
 	var ecl = this.config.get("ecl");
 	// TODO get rid of this hack (maybe use placeholders in the config).
-	ecl[1].items[0].config.dashboard = this.config.get("dashboard");
+	ecl[0].config.dashboard = this.config.get("dashboard");
 	return ecl;
 };
 
