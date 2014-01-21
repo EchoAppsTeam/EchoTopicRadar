@@ -19,28 +19,8 @@ instances.config = {
 	}
 };
 
-instances.vars = {
-	"apps": []
-};
-
 instances.init = function() {
-	var self = this, parent = $.proxy(this.parent, this);
-	var request = this.config.get("dashboard.request");
-	request({
-		"endpoint": "my/apps",
-		"success": function(response) {
-			self.set("apps", self._prepareAppsList(response));
-			parent();
-		},
-		"error": function() {
-			self.showMessage({
-				"type": "error",
-				"message": self.labels.get("error"),
-				"permanent": true
-			});
-			self.ready();
-		}
-	});
+	this.parent();
 };
 
 instances.renderers.newItem = function(element) {
@@ -50,22 +30,26 @@ instances.renderers.newItem = function(element) {
 	new Echo.GUI.Dropdown({
 		"target": element,
 		"title": this.labels.get("addNewItem"),
-		"entries": $.map(this.get("apps"), function(app) {
+		"entries": $.map(this.config.get("apps"), function(app) {
 			return {
-				"title": Echo.Utils.get(app, "app.title"),
+				"title": app.title,
 				"handler": function() {
-					self.addItem({
-						"title": Echo.Utils.get(app, "app.title"),
-						"component": Echo.Utils.get(app, "app.clientWidget.component"),
-						"script": Echo.Utils.get(app, "app.clientWidget.script"),
-						"scripts": Echo.Utils.get(app, "app.clientWidget.scripts"),
-						"dashboard": app.dashboard
-					});
+					self.addItem({"appId": app.id});
 				}
 			};
 		})
 	});
 	return element;
+};
+
+instances.methods._initItem = function(data, callback) {
+	var apps = this.config.get("apps");
+	var app = apps[data.appId] || {};
+	data = $.extend(true, {}, data, {
+		"title": app.title,
+		"app": app
+	});
+	return this.parent(data, callback);
 };
 
 instances.methods._prepareAppsList = function(subscriptions) {

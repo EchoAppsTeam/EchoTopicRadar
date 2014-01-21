@@ -10,6 +10,10 @@ dashboard.inherits = Echo.Utils.getComponent("Echo.AppServer.Dashboards.AppSetti
 dashboard.templates.main =
 	'<div class="{class:container}"></div>';
 
+dashboard.vars = {
+	"apps": {}
+};
+
 dashboard.events = {
 	"Echo.AppServer.Controls.Bundler.Item.onCollapse": function() {
 		return {"stop": ["bubble"]};
@@ -25,11 +29,16 @@ dashboard.events = {
 	}
 };
 
+dashboard.init = function() {
+	this._fetchAppList($.proxy(this.parent, this));
+};
+
 dashboard.renderers.container = function(element) {
 	this.tabList = new Echo.Apps.TopicRadar.Dashboard.TabList({
 		"target": element,
 		"context": this.config.get("context"),
 		"cdnBaseURL": this.config.get("cdnBaseURL"),
+		"apps": this.get("apps"),
 		"dashboard": {
 			"data": this.config.get("data"),
 			"events": this.config.get("events"),
@@ -48,6 +57,36 @@ dashboard.methods._configChanged = function() {
 			"tabs": this.tabList.value()
 		}
 	});
+};
+
+dashboard.methods._fetchAppList = function(callback) {
+	var self = this;
+	this.config.get("request")({
+		"endpoint": "my/apps",
+		"success": function(response) {
+			self._prepareAppList(response);
+			callback && callback();
+		}
+	});
+};
+
+dashboard.methods._prepareAppList = function(subscriptions) {
+	var apps = Echo.Utils.foldl({}, subscriptions, function(subscription, acc) {
+		var app = subscription.app || {};
+		var dashboard = $.grep(app.dashboards || [], function(d) {
+			return d.type === "instances";
+		})[0];
+		var endpoints = app.endpoints || {};
+		if (
+			dashboard
+			&& !endpoints["instance/add"]
+			&& !endpoints["instance/remove"]
+		) {
+			app.dashboard = dashboard;
+			acc[app.id] = app;
+		}
+	});
+	this.set("apps", apps);
 };
 
 Echo.AppServer.Dashboard.create(dashboard);

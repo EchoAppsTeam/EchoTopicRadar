@@ -26,7 +26,7 @@ instance.init = function() {
 
 instance.methods.getECL = function() {
 	var ecl = this.config.get("ecl");
-	var dashboard = this.get("data.dashboard");
+	var dashboard = this.get("data.app.dashboard");
 	var rootDashboard = $.extend(true, {}, this.config.get("dashboard"), {});
 
 	// TODO we should override 'app' in the rootDashboard
@@ -46,7 +46,13 @@ instance.methods.getECL = function() {
 };
 
 instance.methods.value = function() {
-	return $.extend(true, {}, this.get("data"));
+	return {
+		"appId": this.get("data.app.id"), // TODO get rid of app.app
+		"component": this.get("data.app.clientWidget.component"),
+		"script": this.get("data.app.clientWidget.script"),
+		"scripts": this.get("data.app.clientWidget.scripts"),
+		"config": this.get("data.config")
+	};
 };
 
 Echo.AppServer.Dashboard.create(instance);

@@ -115,6 +115,7 @@ list.methods._initItem = function(data, callback) {
 			"target": $("<div>"),
 			"context": this.config.get("context"),
 			"cdnBaseURL": this.config.get("cdnBaseURL"),
+			"apps": this.config.get("apps"),
 			"dashboard": this.config.get("dashboard"),
 			"data": $.extend(true, data, {
 				"title": data.title || this.labels.get("defaultItemTitle", {"index": this.itemsCounter})
