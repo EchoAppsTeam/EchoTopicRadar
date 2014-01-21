@@ -1,8 +1,8 @@
 {
 	"version": 1,
 	"manifest": {
-		"id": "echo-topicradar",
+		"id": "echo-topic-radar",
 		"name": "TopicRadar"
 	},
-	"baseURL": "//cdn.echoenabled.com/apps/echo/topicradar"
+	"baseURL": "//cdn.echoenabled.com/apps/echo/topic-radar"
 }

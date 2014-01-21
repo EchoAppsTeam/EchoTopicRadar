@@ -171,7 +171,7 @@ module.exports = function(grunt) {
 				"remoteRoot": shared.config("env") === "staging" ? "/staging" : "",
 				"purgeTitle": "<%= pkg.name %>",
 				"purgePaths": [
-					"/apps/echo/topicradar/"
+					"/apps/echo/topic-radar/"
 				]
 			},
 			"regular": {
@@ -180,7 +180,7 @@ module.exports = function(grunt) {
 						"all": {
 							"src": "**",
 							"cwd": "<%= dirs.dist %>/",
-							"dest": "<%= release.options.remoteRoot %>/apps/echo/topicradar/"
+							"dest": "<%= release.options.remoteRoot %>/apps/echo/topic-radar/"
 						}
 					}
 				}
