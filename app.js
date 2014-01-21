@@ -113,7 +113,7 @@ radar.css =
 	'.{class:instance} { padding-bottom: 10px; }' +
 	'.{class:instance}:last-child { padding-bottom: 0px; }' +
 	// TODO remove this code when F:2086 will be fixed.
-	'.echo-appserver-controls-preview-content .{class:container} .echo-canvas-appContainer { margin: 0px; border: 0px; padding: 0px; backgroun: transperent; }';
+	'.echo-appserver-controls-preview-content .{class:container} .echo-canvas-appContainer { margin: 0px; border: 0px; padding: 0px; background: transperent; }';
 
 Echo.App.create(radar);
 
