@@ -96,6 +96,8 @@ radar.css =
 	'.{class:panel} { table-layout: fixed; }' +
 	'.echo-sdk-ui .{class:panels}.tab-content > .active { display: table; table-layout: fixed; width: 100%; }' +
 	'.{class:column} { display: table-cell; vertical-align: top; }' +
+	'.{class:column} { padding-right: 10px; }' +
+	'.{class:column}:last-child { padding-right: 0px; }' +
 	// TODO remove this code when F:2086 will be fixed.
 	'.echo-appserver-controls-preview-content .{class:container} .echo-canvas-appContainer { margin: 0px; border: 0px; padding: 0px; backgroun: transperent; }';
 
