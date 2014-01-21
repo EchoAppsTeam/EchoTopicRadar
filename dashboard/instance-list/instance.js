@@ -29,9 +29,8 @@ instance.methods.getECL = function() {
 	var dashboard = this.get("data.app.dashboard");
 	var rootDashboard = $.extend(true, {}, this.config.get("dashboard"), {});
 
-	// TODO we should override 'app' in the rootDashboard
-	// replace root dashboard instance config with current app config 
 	Echo.Utils.set(rootDashboard, "data.instance.config", this.get("data.config", {}));
+	Echo.Utils.set(rootDashboard, "data.app", this.get("data.app", {}));
 	// TODO get rid of this (use placeholders)
 	ecl[0].config = {
 		"component": dashboard.component,
