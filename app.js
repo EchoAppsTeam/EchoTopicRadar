@@ -43,7 +43,10 @@ radar.renderers.tabs = function(element) {
 			return {
 				"id": "tab-" + tabIndex,
 				"label": tab.title,
-				"extraClass": self.cssPrefix + "tab-" + tabIndex,
+				"extraClass": self.substitute({
+					"template": "{class:tab} {class:tab}-{data:tabIndex}",
+					"data": {"tabIndex": tabIndex}
+				}),
 				"panel": (function(columns) {
 					var panel = $(self.substitute({
 						"template": self.templates.panel,
@@ -107,6 +110,7 @@ radar.dependencies = [{
 radar.css =
 	'.{class:panel} { table-layout: fixed; }' +
 	'.echo-sdk-ui .{class:panels}.tab-content > .active { display: table; table-layout: fixed; width: 100%; }' +
+	'.{class:tab} > a { font-family: "Helvetica Neue", arial, sans-serif; }' +
 	'.{class:column} { display: table-cell; vertical-align: top; }' +
 	'.{class:column} { padding-right: 10px; }' +
 	'.{class:column}:last-child { padding-right: 0px; }' +
