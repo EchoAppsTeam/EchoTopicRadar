@@ -22,7 +22,7 @@
 		"type": "external",
 		"title": "Documentation",
 		"config": {
-			"src": "http://emb.echoplatform.com/topicradar/docs/overview"
+			"src": "http://emb.echoplatform.com/topic-radar/docs/overview"
 		}
 	}],
 	"client_widget": {
