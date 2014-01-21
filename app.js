@@ -16,10 +16,13 @@ radar.templates.main =
 	'</div>';
 
 radar.templates.panel =
-	'<div class="{class:panel} {class:panel}-{data:tabIndex}"></div>';
+	'<div class="{class:panel} {class:panel}-{data:index}"></div>';
 
 radar.templates.column =
-	'<div class="{class:column}"></div>';
+	'<div class="{class:column} {class:column}-{data:index}"></div>';
+
+radar.templates.instance =
+	'<div class="{class:instance} {class:instance}-{data:index}"></div>';
 
 radar.init = function() {
 	this.render();
@@ -45,12 +48,16 @@ radar.renderers.tabs = function(element) {
 					var panel = $(self.substitute({
 						"template": self.templates.panel,
 						"data": {
-							"tabIndex": tabIndex
+							"index": tabIndex
 						}
 					}));
 					$.each(columns || [], function(columnIndex, column) {
-						var columnContainer = $(self.substitute({"template": self.templates.column}));
-						columnContainer.addClass(self.cssPrefix + "column-" + columnIndex);
+						var columnContainer = $(self.substitute({
+							"template": self.templates.column,
+							"data": {
+								"index": columnIndex
+							}
+						}));
 						self.view.render({
 							"name": "_column",
 							"target": columnContainer,
@@ -73,7 +80,12 @@ radar.renderers._column = function(element, extra) {
 		element.css("width", column.width);
 	}
 	$.each(column.instances || [], function(instanceIndex, instance) {
-		var container = $("<div>").addClass(self.cssPrefix + "instance-" + instanceIndex);
+		var container = $(self.substitute({
+			"template": self.templates.instance,
+			"data": {
+				"index": instanceIndex
+			}
+		}));
 		element.append(container);
 		Echo.Loader.initApplication($.extend(true, {
 			"config": {
@@ -98,6 +110,8 @@ radar.css =
 	'.{class:column} { display: table-cell; vertical-align: top; }' +
 	'.{class:column} { padding-right: 10px; }' +
 	'.{class:column}:last-child { padding-right: 0px; }' +
+	'.{class:instance} { padding-bottom: 10px; }' +
+	'.{class:instance}:last-child { padding-bottom: 0px; }' +
 	// TODO remove this code when F:2086 will be fixed.
 	'.echo-appserver-controls-preview-content .{class:container} .echo-canvas-appContainer { margin: 0px; border: 0px; padding: 0px; backgroun: transperent; }';
 
