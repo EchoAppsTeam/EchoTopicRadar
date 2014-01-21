@@ -8,7 +8,7 @@ var instance = Echo.AppServer.Dashboard.manifest("Echo.Apps.TopicRadar.Dashboard
 instance.inherits = Echo.Utils.getComponent("Echo.Apps.TopicRadar.Dashboard.Item");
 
 instance.labels = {
-	"removePopupHint": "Delete this instance"
+	"removePopupHint": "Delete this App"
 };
 
 instance.config = {

@@ -23,6 +23,12 @@ column.config = {
 			}
 		}
 	}, {
+		"component": "TextField",
+		"name": "label",
+		"config": {
+			"title": "Apps"
+		}
+	}, {
 		"component": "Echo.Apps.TopicRadar.Dashboard.InstanceList",
 		"name": "instances",
 		"type": "object",
@@ -39,8 +45,8 @@ column.init = function() {
 column.methods.getECL = function() {
 	var ecl = this.config.get("ecl");
 	// TODO get rid of this hack (maybe use placeholders in the config).
-	ecl[1].config.dashboard = this.config.get("dashboard");
-	ecl[1].config.apps = this.config.get("apps");
+	ecl[2].config.dashboard = this.config.get("dashboard");
+	ecl[2].config.apps = this.config.get("apps");
 	return ecl;
 };
 
