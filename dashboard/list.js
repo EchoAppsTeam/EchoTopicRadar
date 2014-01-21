@@ -126,6 +126,7 @@ list.methods._initItem = function(data, callback) {
 };
 
 list.css =
+	'.{class:list} { margin-bottom: 10px; }' +
 	'.{class:newItem} { background: left center no-repeat url({config:cdnBaseURL.apps.appserver}/images/plus.png); }' +
 	'.{class:newItem} { margin-left: 26px; margin-top: 10px; margin-bottom: 10px; padding-left: 23px; font: 12px Arial; font-weight: bold; color: #787878; }';
 
