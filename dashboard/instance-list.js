@@ -8,7 +8,7 @@ var instances = Echo.AppServer.Dashboard.manifest("Echo.Apps.TopicRadar.Dashboar
 instances.inherits = Echo.Utils.getComponent("Echo.Apps.TopicRadar.Dashboard.List");
 
 instances.labels = {
-	"addNewItem": "Add new App",
+	"addNewItem": "Add new application",
 	"defaultItemTitle": "App {index}",
 	"errorRetrievingBundles": "Unable to retrieve apps list"
 };

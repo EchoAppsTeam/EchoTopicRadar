@@ -26,7 +26,7 @@ column.config = {
 		"component": "TextField",
 		"name": "label",
 		"config": {
-			"title": "Apps"
+			"title": "Applications"
 		}
 	}, {
 		"component": "Echo.Apps.TopicRadar.Dashboard.InstanceList",
