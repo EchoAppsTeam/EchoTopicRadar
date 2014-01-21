@@ -109,6 +109,7 @@ list.methods._prepareItems = function(items) {
 
 list.methods._initItem = function(data, callback) {
 	var Component = Echo.Utils.getComponent(this.config.get("item.component"));
+	this.itemsCounter++;
 	return Component
 		&& new Component({
 			"target": $("<div>"),
@@ -116,7 +117,7 @@ list.methods._initItem = function(data, callback) {
 			"cdnBaseURL": this.config.get("cdnBaseURL"),
 			"dashboard": this.config.get("dashboard"),
 			"data": $.extend(true, data, {
-				"title": data.title || this.labels.get("defaultItemTitle", {"index": ++this.itemsCounter})
+				"title": data.title || this.labels.get("defaultItemTitle", {"index": this.itemsCounter})
 			}),
 			"ready": function() {
 				callback && callback.call(this);
