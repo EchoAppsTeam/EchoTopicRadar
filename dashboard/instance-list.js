@@ -9,6 +9,7 @@ instances.inherits = Echo.Utils.getComponent("Echo.Apps.TopicRadar.Dashboard.Lis
 
 instances.labels = {
 	"addNewItem": "Add a new application",
+	"adding": "Adding...",
 	"defaultItemTitle": "App {index}",
 	"errorRetrievingBundles": "Unable to retrieve apps list"
 };
@@ -26,15 +27,21 @@ instances.init = function() {
 instances.renderers.newItem = function(element) {
 	var self = this;
 
+	var addingClassName = this.substitute({"template": "{inherited.class:newItemAdding} {class:newItemAdding}"});
 	element.empty();
-	new Echo.GUI.Dropdown({
+	var dropdown = new Echo.GUI.Dropdown({
 		"target": element,
 		"title": this.labels.get("addNewItem"),
 		"entries": $.map(this.config.get("apps"), function(app) {
 			return {
 				"title": app.title,
 				"handler": function() {
-					self.addItem({"appId": app.id});
+					element.addClass(addingClassName);
+					dropdown.setTitle(self.labels.get("adding"));
+					self.addItem({"appId": app.id}, function() {
+						element.removeClass(addingClassName);
+						dropdown.setTitle(self.labels.get("addnewItem"));
+					});
 				}
 			};
 		})

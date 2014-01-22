@@ -57,7 +57,7 @@ list.renderers.newItem = function(element) {
 		});
 };
 
-list.methods.addItem = function(data) {
+list.methods.addItem = function(data, callback) {
 	var self = this;
 	var items = this.get("items");
 	this._initItem(
@@ -68,6 +68,7 @@ list.methods.addItem = function(data) {
 				"topic": "onItemAdd",
 				"inherited": true
 			});
+			callback && callback();
 			self.view.render({"name": "list"});
 		}
 	);
@@ -129,6 +130,7 @@ list.methods._initItem = function(data, callback) {
 list.css =
 	'.{class:list} { margin-bottom: 10px; }' +
 	'.{class:newItem} { background: left center no-repeat url({config:cdnBaseURL.apps.appserver}/images/plus.png); }' +
+	'.{class:newItem}.{class:newItemAdding} { background-image: url({config:cdnBaseURL.sdk-assets}/images/loading.gif); }' +
 	'.{class:newItem} { margin-left: 26px; margin-top: 10px; margin-bottom: 10px; padding-left: 23px; font: 12px Arial; font-weight: bold; color: #787878; }';
 
 Echo.AppServer.Dashboard.create(list);
