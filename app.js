@@ -19,7 +19,10 @@ radar.templates.panel =
 	'<div class="{class:panel} {class:panel}-{data:index}"></div>';
 
 radar.templates.column =
-	'<div class="{class:column} {class:column}-{data:index}"></div>';
+	'<div class="{class:column} {class:column}-{data:index}">' +
+		'<div class="{class:columnTitle}"></div>' +
+		'<div class="{class:columnInstances}"></div>' +
+	'</div>';
 
 radar.templates.instance =
 	'<div class="{class:instance} {class:instance}-{data:index}"></div>';
@@ -77,11 +80,39 @@ radar.renderers.tabs = function(element) {
 };
 
 radar.renderers._column = function(element, extra) {
-	var self = this;
-	var column = extra && extra.column;
+	var column = (extra && extra.column) || {};
 	if (column.width) {
 		element.css("width", column.width);
 	}
+
+	this.view.render({
+		"name": "_columnTitle",
+		"target": element.find("." + this.cssPrefix + "columnTitle"),
+		"extra": {"column": column}
+	});
+
+	this.view.render({
+		"name": "_columnInstances",
+		"target": element.find("." + this.cssPrefix + "columnInstances"),
+		"extra": {"column": column}
+	});
+
+	return element;
+};
+
+radar.renderers._columnTitle = function(element, extra) {
+	var column = extra.column;
+	var displayColumnTitle = (typeof column.displayColumnTitle === "boolean")
+		? column.displayColumnTitle
+		: true; // default value
+	return displayColumnTitle
+		? element.append(column.title).show()
+		: element.hide();
+};
+
+radar.renderers._columnInstances = function(element, extra) {
+	var self = this;
+	var column = extra.column;
 	$.each(column.instances || [], function(instanceIndex, instance) {
 		var container = $(self.substitute({
 			"template": self.templates.instance,
@@ -97,7 +128,7 @@ radar.renderers._column = function(element, extra) {
 			}
 		}, instance));
 	});
-	return element.addClass(this.cssPrefix + "column");
+	return element;
 };
 
 radar.dependencies = [{
@@ -114,6 +145,7 @@ radar.css =
 	'.{class:column} { display: table-cell; vertical-align: top; }' +
 	'.{class:column} { padding-right: 10px; }' +
 	'.{class:column}:last-child { padding-right: 0px; }' +
+	'.{class:columnTitle} { font-family: "Helvetica Neue", arial, sans-serif; margin-bottom: 10px; }' +
 	'.{class:instance} { padding-bottom: 10px; }' +
 	'.{class:instance}:last-child { padding-bottom: 0px; }' +
 	// TODO remove this code when F:2086 will be fixed.

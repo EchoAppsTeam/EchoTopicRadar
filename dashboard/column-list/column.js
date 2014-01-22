@@ -14,6 +14,13 @@ column.labels = {
 column.config = {
 	"ecl": [{
 		"component": "Input",
+		"name": "title",
+		"type": "string",
+		"config": {
+			"title": "Title"
+		}
+	}, {
+		"component": "Input",
 		"name": "width",
 		"type": "string",
 		"config": {
@@ -21,6 +28,14 @@ column.config = {
 			"data": {
 				"sample": "300px or 30%"
 			}
+		}
+	}, {
+		"component": "Checkbox",
+		"name": "displayColumnTitle",
+		"type": "boolean",
+		"default": true,
+		"config": {
+			"title": "Display column title"
 		}
 	}, {
 		"component": "TextField",
@@ -45,8 +60,8 @@ column.init = function() {
 column.methods.getECL = function() {
 	var ecl = this.config.get("ecl");
 	// TODO get rid of this hack (maybe use placeholders in the config).
-	ecl[2].config.dashboard = this.config.get("dashboard");
-	ecl[2].config.apps = this.config.get("apps");
+	ecl[4].config.dashboard = this.config.get("dashboard");
+	ecl[4].config.apps = this.config.get("apps");
 	return ecl;
 };
 
