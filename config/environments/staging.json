@@ -2,7 +2,7 @@
 	"version": 1,
 	"manifest": {
 		"id": "echo-topic-radar-dev",
-		"name": "TopicRadar (Dev)"
+		"name": "Topic Radar (Dev)"
 	},
 	"baseURL": "//echoplatform.com/sandbox/staging/apps/echo/topic-radar"
 }

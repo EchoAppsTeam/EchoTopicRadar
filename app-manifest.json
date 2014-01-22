@@ -1,7 +1,7 @@
 {
 	"id": "{%=manifest.id%}",
 	"name": "{%=manifest.name%}",
-	"description": "Echo TopicRadar reference app",
+	"description": "Echo Topic Radar reference app",
 	"app_version": "1.0.0",
 	"cloudapp_protocol_version": "1.0.0",
 	"developer": {
