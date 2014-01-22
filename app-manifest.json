@@ -18,7 +18,19 @@
 		"component": "Echo.Apps.TopicRadar.Dashboard",
 		"type": "instances",
 		"config": {
-			"featuredApps": ["echo-conversations", "echo-stream-plus", "echo-apps-newsfeed"]
+			"featuredApps": ["echo-conversations", "echo-stream-plus", "echo-apps-newsfeed"],
+			"instanceManager": {
+				"instance": {
+					"useLoadingIcon": true
+				},
+				"preview": {
+					"dimensions": {
+						"width": 60,
+						"maxWidth": 70,
+						"minWidth": 40
+					}
+				}
+			}
 		}
 	}, {
 		"id": "docs",
