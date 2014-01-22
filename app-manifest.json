@@ -16,7 +16,10 @@
 		"title": "Instances",
 		"script": "{%=baseURL%}/dashboard.js",
 		"component": "Echo.Apps.TopicRadar.Dashboard",
-		"type": "instances"
+		"type": "instances",
+		"config": {
+			"featuredApps": ["echo-conversations", "echo-stream-plus", "echo-apps-newsfeed"]
+		}
 	}, {
 		"id": "docs",
 		"type": "external",

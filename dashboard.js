@@ -14,6 +14,10 @@ dashboard.vars = {
 	"apps": {}
 };
 
+dashboard.config = {
+	"featuredApps": []
+};
+
 dashboard.events = {
 	"Echo.AppServer.Controls.Bundler.Item.onCollapse": function() {
 		return {"stop": ["bubble"]};
@@ -71,16 +75,25 @@ dashboard.methods._fetchAppList = function(callback) {
 };
 
 dashboard.methods._prepareAppList = function(subscriptions) {
+	var featuredApps = this.config.get("featuredApps");
+	var customerId = this.get("data.customer.id");
 	var apps = Echo.Utils.foldl({}, subscriptions, function(subscription, acc) {
 		var app = subscription.app || {};
 		var dashboard = $.grep(app.dashboards || [], function(d) {
 			return d.type === "instances";
 		})[0];
 		var endpoints = app.endpoints || {};
+
+    var ownApp = (app.customer && app.customer.id === customerId)
+      || (app.developer && app.developer.id === customerId);
 		if (
-			dashboard
-			&& !endpoints["instance/add"]
-			&& !endpoints["instance/remove"]
+			~$.inArray(app.name, featuredApps) // app 'approved' (defined in dashboard config)
+			|| (
+        ownApp
+        && dashboard
+				&& !endpoints["instance/add"]
+				&& !endpoints["instance/remove"]
+			)
 		) {
 			app.dashboard = dashboard;
 			acc[app.id] = app;
