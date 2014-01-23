@@ -75,12 +75,14 @@ dashboard.renderers.container = function(element) {
 };
 
 dashboard.methods._configChanged = function() {
-	this.update({
-		"meta": this.get("meta"),
-		"config": {
-			"tabs": this.tabList.value()
-		}
-	});
+	if (this.tabList) {
+		this.update({
+			"meta": this.get("meta"),
+			"config": {
+				"tabs": this.tabList.value()
+			}
+		});
+	}
 };
 
 dashboard.methods._fetchAppList = function(callback) {

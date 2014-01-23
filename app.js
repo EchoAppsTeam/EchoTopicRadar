@@ -9,6 +9,10 @@ radar.config = {
 	"tabs": []
 };
 
+radar.vars = {
+	"apps": []
+};
+
 radar.templates.main =
 	'<div class="{class:container}">' +
 		'<div class="{class:tabs}"></div>' +
@@ -42,6 +46,35 @@ radar.renderers.tabs = function(element) {
 	new Echo.GUI.Tabs({
 		"target": element,
 		"panels": this.view.get("panels"),
+		"show": function() {
+			// destroy all apps
+			$.map(self.get("apps"), function(app) {
+				if ($.isFunction(app.destroy)) {
+					app.destroy();
+				}
+			});
+			self.set("apps", []);
+		},
+		"shown": function(tab, panel, tabName, tabIndex) {
+			// TODO move this logic to separate class (TopicRadar.Tab) ?
+			panel.empty();
+			var columns = tabs[tabIndex].columns || [];
+			$.each(columns || [], function(columnIndex, column) {
+				// TODO move this logic to separate class (TopicRadar.Column) ?
+				var columnContainer = $(self.substitute({
+					"template": self.templates.column,
+					"data": {
+						"index": columnIndex
+					}
+				}));
+				self.view.render({
+					"name": "_column",
+					"target": columnContainer,
+						"extra": {"column": column}
+				});
+				panel.append(columnContainer);
+			});
+		},
 		"entries": $.map(tabs, function(tab, tabIndex) {
 			return {
 				"id": "tab-" + tabIndex,
@@ -50,29 +83,12 @@ radar.renderers.tabs = function(element) {
 					"template": "{class:tab} {class:tab}-{data:tabIndex}",
 					"data": {"tabIndex": tabIndex}
 				}),
-				"panel": (function(columns) {
-					var panel = $(self.substitute({
-						"template": self.templates.panel,
-						"data": {
-							"index": tabIndex
-						}
-					}));
-					$.each(columns || [], function(columnIndex, column) {
-						var columnContainer = $(self.substitute({
-							"template": self.templates.column,
-							"data": {
-								"index": columnIndex
-							}
-						}));
-						self.view.render({
-							"name": "_column",
-							"target": columnContainer,
-							"extra": {"column": column}
-						});
-						panel.append(columnContainer);
-					});
-					return panel;
-				})(tab.columns)
+				"panel": $(self.substitute({
+					"template": self.templates.panel,
+					"data": {
+						"index": tabIndex
+					}
+				}))
 			};
 		})
 	});
@@ -124,7 +140,10 @@ radar.renderers._columnInstances = function(element, extra) {
 		Echo.Loader.initApplication($.extend(true, {
 			"config": {
 				"target": container,
-				"context": self.config.get("context")
+				"context": self.config.get("context"),
+				"ready": function() {
+					self.apps.push(this);
+				}
 			}
 		}, instance));
 	});
