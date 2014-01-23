@@ -62,6 +62,7 @@ column.methods.getECL = function() {
 	// TODO get rid of this hack (maybe use placeholders in the config).
 	ecl[4].config.dashboard = this.config.get("dashboard");
 	ecl[4].config.apps = this.config.get("apps");
+	ecl[4].config.meta = this.config.get("meta");
 	return ecl;
 };
 

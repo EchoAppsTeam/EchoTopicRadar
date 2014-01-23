@@ -10,7 +10,10 @@ list.events = {
 		return {"stop": ["bubble", "propagation"]};
 	},
 	"Echo.Apps.TopicRadar.Dashboard.Item.onRemove": function(_, data) {
-		this.removeItem(data.id);
+		var item = data.item;
+		if (item) {
+			this.removeItem(item.get("data.id"));
+		}
 	}
 };
 
@@ -66,7 +69,10 @@ list.methods.addItem = function(data, callback) {
 			items.push(this);
 			self.events.publish({
 				"topic": "onItemAdd",
-				"inherited": true
+				"inherited": true,
+				"data": {
+					"item": this
+				}
 			});
 			callback && callback();
 			self.view.render({"name": "list"});
@@ -117,6 +123,7 @@ list.methods._initItem = function(data, callback) {
 			"context": this.config.get("context"),
 			"cdnBaseURL": this.config.get("cdnBaseURL"),
 			"apps": this.config.get("apps"),
+			"meta": this.config.get("meta"),
 			"dashboard": this.config.get("dashboard"),
 			"data": $.extend(true, data, {
 				"title": data.title || this.labels.get("defaultItemTitle", {"index": this.itemsCounter})

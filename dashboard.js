@@ -11,7 +11,8 @@ dashboard.templates.main =
 	'<div class="{class:container}"></div>';
 
 dashboard.vars = {
-	"apps": {}
+	"apps": {},
+	"meta": {}
 };
 
 dashboard.config = {
@@ -22,18 +23,35 @@ dashboard.events = {
 	"Echo.AppServer.Controls.Bundler.Item.onCollapse": function() {
 		return {"stop": ["bubble"]};
 	},
-	"Echo.Apps.TopicRadar.Dashboard.List.onItemAdd": function() {
+	"Echo.Apps.TopicRadar.Dashboard.List.onItemAdd": function(_, data) {
+		// we should save instance meta if it added
+		var item = data.item;
+		if (item && item.name === "Echo.Apps.TopicRadar.Dashboard.InstanceList.Instance") {
+			var itemId = item.get("data.id");
+			var meta = this.get("meta", {});
+			meta[itemId] = {
+				"appId": item.get("data.app.id")
+			};
+			this.set("meta", meta);
+		}
 		this._configChanged();
 	},
-	"Echo.Apps.TopicRadar.Dashboard.Item.onRemove": function() {
+	"Echo.Apps.TopicRadar.Dashboard.Item.onRemove": function(_, data) {
 		this._configChanged();
 	},
 	"Echo.Apps.TopicRadar.Dashboard.Item.onChange": function() {
 		this._configChanged();
+	},
+	"Echo.Apps.TopicRadar.Dashboard.InstanceList.Instance.onDestroy": function(_, data) {
+		var meta = this.get("meta");
+		var itemId = data.item && data.item.get("data.id");
+		delete meta[itemId];
+		this.set("meta", meta);
 	}
 };
 
 dashboard.init = function() {
+	this.set("meta", this.get("data.instance.meta", {}));
 	this._fetchAppList($.proxy(this.parent, this));
 };
 
@@ -43,6 +61,7 @@ dashboard.renderers.container = function(element) {
 		"context": this.config.get("context"),
 		"cdnBaseURL": this.config.get("cdnBaseURL"),
 		"apps": this.get("apps"),
+		"meta": this.get("data.instance.meta", {}),
 		"dashboard": {
 			"data": this.config.get("data"),
 			"events": this.config.get("events"),
@@ -57,6 +76,7 @@ dashboard.renderers.container = function(element) {
 
 dashboard.methods._configChanged = function() {
 	this.update({
+		"meta": this.get("meta"),
 		"config": {
 			"tabs": this.tabList.value()
 		}

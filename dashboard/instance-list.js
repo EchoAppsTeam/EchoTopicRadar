@@ -38,7 +38,10 @@ instances.renderers.newItem = function(element) {
 				"handler": function() {
 					element.addClass(addingClassName);
 					dropdown.setTitle(self.labels.get("adding"));
-					self.addItem({"appId": app.id}, function() {
+					self.addItem({
+						"id": Echo.Utils.getUniqueString(),
+						"app": app
+					}, function() {
 						element.removeClass(addingClassName);
 						dropdown.setTitle(self.labels.get("addnewItem"));
 					});
@@ -50,12 +53,14 @@ instances.renderers.newItem = function(element) {
 };
 
 instances.methods._initItem = function(data, callback) {
-	var apps = this.config.get("apps");
-	var app = apps[data.appId] || {};
-	data = $.extend(true, {}, data, {
-		"title": app.title,
-		"app": app
-	});
+	var meta = this.config.get("meta", {});
+	var apps = this.config.get("apps", {});
+
+	var instanceMeta = meta[data.id] || {};
+	data.app = data.app || apps[instanceMeta.appId];
+	data.title = data.app && data.app.title;
+
+	data = $.extend(true, {}, data);
 	return this.parent(data, callback);
 };
 

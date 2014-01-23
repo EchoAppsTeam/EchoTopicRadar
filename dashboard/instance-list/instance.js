@@ -24,13 +24,29 @@ instance.init = function() {
 	this.parent();
 };
 
+instance.destroy = function() {
+	this.events.publish({
+		"topic": "onDestroy",
+		"inherited": true,
+		"data": {
+			"item": this
+		}
+	});
+};
+
 instance.methods.getECL = function() {
 	var ecl = this.config.get("ecl");
 	var dashboard = this.get("data.app.dashboard");
 	var rootDashboard = $.extend(true, {}, this.config.get("dashboard"), {});
 
-	Echo.Utils.set(rootDashboard, "data.instance.config", this.get("data.config", {}));
-	Echo.Utils.set(rootDashboard, "data.app", this.get("data.app", {}));
+	$.each({
+		"data.instance.config": this.get("data.config", {}),
+		"data.app": this.get("data.app", {}),
+		"data.instance.name": Echo.Utils.get(rootDashboard, "data.instance.name") + "-" + this.get("data.id"),
+		"meta": {}
+	}, function(key, value) {
+		Echo.Utils.set(rootDashboard, key, value);
+	});
 	// TODO get rid of this (use placeholders)
 	ecl[0].config = {
 		"component": dashboard.component,
@@ -46,7 +62,7 @@ instance.methods.getECL = function() {
 
 instance.methods.value = function() {
 	return {
-		"appId": this.get("data.app.id"), // TODO get rid of app.app
+		"id": this.get("data.id"),
 		"component": this.get("data.app.clientWidget.component"),
 		"script": this.get("data.app.clientWidget.script"),
 		"scripts": this.get("data.app.clientWidget.scripts"),

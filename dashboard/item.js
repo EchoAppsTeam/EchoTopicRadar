@@ -46,7 +46,9 @@ item.methods.remove = function() {
 	this.events.publish({
 		"topic": "onRemove",
 		"inherited": true,
-		"data": this.get("data")
+		"data": {
+			"item": this
+		}
 	});
 };
 
