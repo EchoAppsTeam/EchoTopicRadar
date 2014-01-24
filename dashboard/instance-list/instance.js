@@ -39,6 +39,10 @@ instance.methods.getECL = function() {
 	var dashboard = this.get("data.app.dashboard");
 	var rootDashboard = $.extend(true, {}, this.config.get("dashboard"), {});
 
+	// TODO display message if dashboard is not defined
+	if (!dashboard) {
+		return [];
+	}
 	$.each({
 		"data.instance.config": this.get("data.config", {}),
 		"data.app": this.get("data.app", {}),

@@ -51,8 +51,15 @@ dashboard.events = {
 };
 
 dashboard.init = function() {
+	var self = this;
+	var parent = $.proxy(this.parent, this);
 	this.set("meta", this.get("data.instance.meta", {}));
-	this._fetchAppList($.proxy(this.parent, this));
+	this._fetchAppList(function() {
+		// TODO BC code. 'Old' instances has appId in the config(not in meta).
+		// So, we should find such instances and generate its meta.
+		self._generateMeta();
+		parent();
+	});
 };
 
 dashboard.renderers.container = function(element) {
@@ -122,6 +129,39 @@ dashboard.methods._prepareAppList = function(subscriptions) {
 		}
 	});
 	this.set("apps", apps);
+};
+
+// TODO BC code. 'Old' instances has appId in the config(not in meta).
+// So, we should find such instances and generate its meta.
+dashboard.methods._generateMeta = function() {
+	var meta = this.get("meta");
+	var tabs = this.get("data.instance.config.tabs", []);
+	var updateRequired = false;
+	$.map(tabs, function(tab) {
+		$.map(tab.columns || [], function(column) {
+			$.map(column.instances || [], function(instance) {
+				instance = instance || {};
+				if (
+					instance.appId
+					&& !instance.id
+				) {
+					updateRequired = true;
+					instance.id = Echo.Utils.getUniqueString();
+					meta[instance.id] = {
+						"appId": instance.appId
+					};
+				}
+			});
+		});
+	});
+	if (updateRequired) {
+		this.update({
+			"meta": meta,
+			"config": {
+				"tabs": tabs
+			}
+		});
+	}
 };
 
 Echo.AppServer.Dashboard.create(dashboard);
