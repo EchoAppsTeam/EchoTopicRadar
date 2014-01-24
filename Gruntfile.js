@@ -160,7 +160,8 @@ module.exports = function(grunt) {
 			"options": {
 				"jshintrc": ".jshintrc"
 			},
-			"grunt": ["Gruntfile.js", "grunt/**/*.js", "<%= sources.js %>"]
+			"grunt": ["Gruntfile.js", "grunt/**/*.js"],
+			"sources": ["<%= sources.js %>"]
 		},
 		"release": {
 			"options": {
@@ -171,7 +172,7 @@ module.exports = function(grunt) {
 				"remoteRoot": shared.config("env") === "staging" ? "/staging" : "",
 				"purgeTitle": "<%= pkg.name %>",
 				"purgePaths": [
-					"/apps/echo/topic-radar/"
+					"/apps/echo/topic-radar/v<%= pkg.versions.stable %>/"
 				]
 			},
 			"regular": {
@@ -180,7 +181,7 @@ module.exports = function(grunt) {
 						"all": {
 							"src": "**",
 							"cwd": "<%= dirs.dist %>/",
-							"dest": "<%= release.options.remoteRoot %>/apps/echo/topic-radar/"
+							"dest": "<%= release.options.remoteRoot %>/apps/echo/topic-radar/v<%= pkg.versions.stable %>/"
 						}
 					}
 				}
@@ -218,11 +219,19 @@ module.exports = function(grunt) {
 	};
 	grunt.initConfig(config);
 
+	var parts = grunt.config("pkg.version").split(".");
+	grunt.config("pkg.versions", {
+		"stable": parts.join("."),
+		"latest": parts[0] + "." + parts[1]
+	});
+
 	function assembleEnvConfig() {
 		var env = shared.config("env");
 		var envFilename = "config/environments/" + env + ".json";
 		if (!grunt.file.exists(envFilename)) return;
-		grunt.config("envConfig", grunt.file.readJSON(envFilename));
+		var config = grunt.file.readJSON(envFilename);
+		config.packageVersions = grunt.config("pkg.versions");
+		grunt.config("envConfig", config);
 	}
 	assembleEnvConfig();
 };
