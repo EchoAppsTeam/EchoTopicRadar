@@ -16,7 +16,8 @@ dashboard.vars = {
 };
 
 dashboard.config = {
-	"featuredApps": []
+	"featuredApps": [],
+	"disabledApps": ["echo-topic-radar-dev", "echo-topic-radar"]
 };
 
 dashboard.events = {
@@ -105,6 +106,7 @@ dashboard.methods._fetchAppList = function(callback) {
 
 dashboard.methods._prepareAppList = function(subscriptions) {
 	var featuredApps = this.config.get("featuredApps");
+	var disabledApps = this.config.get("disabledApps");
 	var customerId = this.get("data.customer.id");
 	var apps = Echo.Utils.foldl({}, subscriptions, function(subscription, acc) {
 		var app = subscription.app || {};
@@ -113,15 +115,19 @@ dashboard.methods._prepareAppList = function(subscriptions) {
 		})[0];
 		var endpoints = app.endpoints || {};
 
-    var ownApp = (app.customer && app.customer.id === customerId)
-      || (app.developer && app.developer.id === customerId);
+		var ownApp = (app.customer && app.customer.id === customerId)
+			|| (app.developer && app.developer.id === customerId);
+
 		if (
-			~$.inArray(app.name, featuredApps) // app 'approved' (defined in dashboard config)
-			|| (
-        ownApp
-        && dashboard
-				&& !endpoints["instance/add"]
-				&& !endpoints["instance/remove"]
+			!~$.inArray(app.name, disabledApps) // exclude 'disabled' apps
+			&& (
+				~$.inArray(app.name, featuredApps) // app 'approved' (defined in dashboard config)
+				|| (
+					ownApp
+					&& dashboard
+					&& !endpoints["instance/add"]
+					&& !endpoints["instance/remove"]
+				)
 			)
 		) {
 			app.dashboard = dashboard;
