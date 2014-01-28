@@ -158,6 +158,7 @@ radar.dependencies = [{
 }];
 
 radar.css =
+	'.echo-sdk-ui .{class:panels}.tab-content { overflow: visible; }' +
 	'.{class:panel} { table-layout: fixed; }' +
 	'.echo-sdk-ui .{class:panels}.tab-content > .active { display: table; table-layout: fixed; width: 100%; }' +
 	'.{class:tab} > a { font-family: "Helvetica Neue", arial, sans-serif; }' +
