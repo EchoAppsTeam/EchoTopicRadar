@@ -53,6 +53,17 @@ dashboard.events = {
 
 dashboard.init = function() {
 	var self = this;
+
+	// We cannot update instances with large config/meta using GET request (there is limit for URL length).
+	// So, we override 'request' function and set method to 'POST' for 'instance/{id}/update' endpoint.
+	var parentRequest = this.config.get("request");
+	this.config.set("request", function(params) {
+		if (params.endpoint === "instance/{data:instance.id}/update") {
+			params.method = "POST";
+		}
+		parentRequest.apply(this, arguments);
+	});
+
 	var parent = $.proxy(this.parent, this);
 	this.set("meta", this.get("data.instance.meta", {}));
 	this._fetchAppList(function() {
@@ -80,28 +91,6 @@ dashboard.renderers.container = function(element) {
 		}
 	});
 	return element;
-};
-
-dashboard.methods.update = function(data) {
-	var self = this;
-	Echo.AppServer.API.request({
-		"apiBaseURL": this.config.get("apiBaseURL"),
-		"method": "POST",
-		"endpoint": "instance/{id}/update",
-		"id": this.get("data.instance.id"),
-		"data": {
-			"data": data
-		},
-		"onData": function() {
-			Echo.Events.publish({
-				"topic": "Echo.AppServer.Controls.Dashboard.onConfigChanged",
-				"context": self.config.get("context"),
-				"data": $.extend({
-					"local": true
-				}, data)
-			});
-		}
-	}).send();
 };
 
 dashboard.methods._configChanged = function() {
