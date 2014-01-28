@@ -143,7 +143,11 @@ radar.renderers._columnInstances = function(element, extra) {
 				"context": self.config.get("context"),
 				"ready": function() {
 					self.apps.push(this);
-				}
+				},
+				// pass these parameters to support config overriding
+				"apiBaseURL": self.config.get("apiBaseURL"),
+				"submissionProxyURL": self.config.get("submissionProxyURL"),
+				"dependencies": self.config.get("dependencies")
 			}
 		}, instance));
 	});
