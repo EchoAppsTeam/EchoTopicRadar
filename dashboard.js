@@ -82,6 +82,28 @@ dashboard.renderers.container = function(element) {
 	return element;
 };
 
+dashboard.methods.update = function(data) {
+	var self = this;
+	Echo.AppServer.API.request({
+		"apiBaseURL": this.config.get("apiBaseURL"),
+		"method": "POST",
+		"endpoint": "instance/{id}/update",
+		"id": this.get("data.instance.id"),
+		"data": {
+			"data": data
+		},
+		"onData": function() {
+			Echo.Events.publish({
+				"topic": "Echo.AppServer.Controls.Dashboard.onConfigChanged",
+				"context": self.config.get("context"),
+				"data": $.extend({
+					"local": true
+				}, data)
+			});
+		}
+	}).send();
+};
+
 dashboard.methods._configChanged = function() {
 	if (this.tabList) {
 		this.update({
