@@ -15,6 +15,7 @@ radar.vars = {
 
 radar.templates.main =
 	'<div class="{class:container}">' +
+		'<iframe class="{class:resizeFrame}" width="100%" height="100%" frameBorder="0"></iframe>' +
 		'<div class="{class:tabs}"></div>' +
 		'<div class="{class:panels}"></div>' +
 	'</div>';
@@ -51,10 +52,12 @@ radar.renderers.tabs = function(element) {
 			self.initComponent({
 				"id": "activeTab",
 				"component": "Echo.Apps.TopicRadar.Tab",
-				"config": $.extend(true, {}, tabs[tabIndex], {
+				"config": {
 					"target": panel,
-					"index": tabIndex
-				})
+					"data": $.extend(true, {
+						"index": tabIndex
+					}, tabs[tabIndex])
+				}
 			});
 		},
 		"entries": $.map(tabs, function(tab, tabIndex) {
@@ -77,6 +80,17 @@ radar.renderers.tabs = function(element) {
 	return element;
 };
 
+radar.renderers.resizeFrame = function(element) {
+	var self = this;
+	return element.on("load", function() {
+		this.contentWindow.onresize = function() {
+			self.events.publish({
+				"topic": "onAppResize"
+			});
+		};
+	});
+};
+
 radar.dependencies = [{
 	"loaded": function() { return !!Echo.GUI; },
 	"url": "{config:cdnBaseURL.sdk}/gui.pack.js"
@@ -87,8 +101,10 @@ radar.dependencies = [{
 radar.css =
 	'.echo-sdk-ui .{class:panels}.tab-content { overflow: visible; }' +
 	'.{class:panel} { table-layout: fixed; }' +
-	'.echo-sdk-ui .{class:panels}.tab-content > .active { display: table; table-layout: fixed; width: 100%; }' +
+	'.echo-sdk-ui .{class:panels}.tab-content > .active { width: 100%; }' +
 	'.{class:tab} > a { font-family: "Helvetica Neue", arial, sans-serif; }' +
+
+	'.{class:resizeFrame} { position: absolute; z-index: -1; border: 0; padding: 0; }' +
 
 	// TODO remove this code when F:2086 will be fixed.
 	'.echo-appserver-controls-preview-content .{class:container} .echo-canvas-appContainer { margin: 0px; border: 0px; padding: 0px; background: transperent; }';

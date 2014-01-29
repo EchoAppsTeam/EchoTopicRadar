@@ -14,22 +14,31 @@ column.templates.main =
 column.templates.instance =
 	'<div class="{class:instance} {class:instance}-{data:index}"></div>';
 
-column.config = {
-	"title": "",
-	"displayColumnTitle": true,
-	"instances": []
+column.events = {
+	"Echo.Apps.TopicRadar.Tab.onExpand": function() {
+		this.expanded = true;
+		this.view.render({"name": "title"});
+	},
+	"Echo.Apps.TopicRadar.Tab.onCollapse": function() {
+		this.expanded = false;
+		this.view.render({"name": "title"});
+	}
+};
+
+column.vars = {
+	"expanded": true
 };
 
 column.renderers.title = function(element) {
-	return this.config.get("displayColumnTitle")
-		? element.empty().append(this.config.get("title")).show()
+	return (this.get("data.displayColumnTitle", true) && this.expanded)
+		? element.empty().append(this.get("data.title")).show()
 		: element.hide();
 };
 
 column.renderers.instances = function(element) {
 	var self = this;
 	element.empty();
-	$.each(this.config.get("instances"), function(instanceIndex, instance) {
+	$.each(this.get("data.instances"), function(instanceIndex, instance) {
 		var target = $(self.substitute({
 			"template": self.templates.instance,
 			"data": {
