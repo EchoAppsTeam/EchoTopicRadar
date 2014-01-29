@@ -92,6 +92,13 @@ instances.methods._getInstancesDashboard = function(dashboards) {
 };
 
 instances.css =
+	// remove 'plus' icon from newItem container and insert it into <a> tag.
+	// in this case this icon will be clickable.
+	'.{class:newItem} { background: none; padding-left: 0px; }' +
+	'.{class:newItem}.{class:newItemAdding} { background-image: none; }' +
+	'.{class:newItem} a.dropdown-toggle { background: left center no-repeat url({config:cdnBaseURL.apps.appserver}/images/plus.png); padding-left: 23px; }' +
+	'.{class:newItem}.{class:newItemAdding} a.dropdown-toggle { background-image: url({config:cdnBaseURL.sdk-assets}/images/loading.gif);}' +
+
 	'.echo-sdk-ui .{class:newItem} .dropdown-toggle,' +
 	'.echo-sdk-ui .{class:newItem} .open .dropdown-toggle:focus,' +
 	'.echo-sdk-ui .{class:newItem} .open .dropdown-toggle:active,' +
