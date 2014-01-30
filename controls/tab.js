@@ -132,6 +132,9 @@ tab.methods._initColumns = function() {
 				"index": index
 			}
 		}));
+		if (column.width) {
+			target.css("width", column.width);
+		}
 		var component = self.initComponent({
 			"id": "column" + index,
 			"component": "Echo.Apps.TopicRadar.Column",
