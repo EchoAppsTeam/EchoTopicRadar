@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Echo TopicRadar v{%=packageVersions.stable%} Demo</title>
+</head>
+
+<body>
+
+<script type="text/javascript" src="//cdn.echoenabled.com/sdk/v3/loader.js"></script>
+
+<div id="container" style="margin: 0px auto; width: 80%;"></div>
+
+<script type="text/javascript">
+
+	Echo.Loader.initApplication({
+		"script": "{%=baseURL%}/app.js",
+		"component": "Echo.Apps.TopicRadar",
+		"backplane": {
+			"serverBaseURL": "https://api.echoenabled.com/v1",
+			"busName": "echo"
+		},
+		"config": {
+			"appkey": "echo.echo.streamserver.echo.com",
+			"target": document.getElementById("container"),
+			"tabs": [{
+				"title": "First Tab",
+				"columns": [{
+					"instances": [{
+						"component": "Echo.Apps.Conversations",
+						"script": "http://cdn.echoenabled.com/apps/echo/conversations/app.js",
+						"config": {
+							"targetURL": "http://echoplatform.com/test/conversations",
+							"dependencies": {
+								"Janrain": {"appId": "echo"},
+								"StreamServer": {"appkey": "echo.jssdk.demo.aboutecho.com"}
+							}
+						}
+					}, {
+						"component": "Echo.StreamServer.Controls.FacePile",
+						"script": "http://cdn.echoenabled.com/sdk/v3/streamserver.pack.js",
+						"config": {
+							"query": "childrenof:http://aboutecho.com/tweets/exec children:0",
+							"appkey": "echo.jssdk.demo.aboutecho.com"
+						}
+					}]
+				}, {
+					"instances": [{
+						"component": "Echo.StreamServer.Controls.Stream",
+						"script": "http://cdn.echoenabled.com/sdk/v3/streamserver.pack.js",
+						"config": {
+							"query": "childrenof:http://aboutecho.com/tweets/exec itemsPerPage:10 state:Untouched,ModeratorApproved children:2 state:Untouched,ModeratorApproved",
+							"appkey": "echo.jssdk.demo.aboutecho.com"
+						}
+					}]
+				}]
+			}, {
+				"title": "Second tab",
+				"columns": [{
+					"instances": [{
+						"component": "Echo.StreamServer.Controls.FacePile",
+						"script": "http://cdn.echoenabled.com/sdk/v3/streamserver.pack.js",
+						"config": {
+							"query": "childrenof:http://aboutecho.com/tweets/exec children:0",
+							"appkey": "echo.jssdk.demo.aboutecho.com"
+						}
+					}]
+				}]
+			}]
+		}
+	});
+
+</script>
+
+</body>
+</html>

@@ -27,7 +27,7 @@ module.exports = function(grunt) {
 		],
 		"demo": [
 			"demo.html",
-			"demo-canvas.html"
+			"demo-dev.html"
 		]
 	};
 
