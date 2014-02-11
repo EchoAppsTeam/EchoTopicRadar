@@ -6,16 +6,13 @@ if (Echo.App.isDefined("Echo.Apps.TopicRadar")) return;
 var radar = Echo.App.manifest("Echo.Apps.TopicRadar");
 
 radar.config = {
+	"appResizeTimeout": 50,
 	"tabs": []
-};
-
-radar.vars = {
-	"apps": []
 };
 
 radar.templates.main =
 	'<div class="{class:container}">' +
-		'<iframe class="{class:resizeFrame}" width="100%" height="100%" frameBorder="0"></iframe>' +
+		'<iframe class="{class:resizeFrame}" width="100%" height="0" frameBorder="0"></iframe>' +
 		'<div class="{class:tabs}"></div>' +
 		'<div class="{class:panels}"></div>' +
 	'</div>';
@@ -38,15 +35,6 @@ radar.renderers.tabs = function(element) {
 	new Echo.GUI.Tabs({
 		"target": element,
 		"panels": this.view.get("panels"),
-		"show": function() {
-			// destroy all apps
-			$.map(self.get("apps"), function(app) {
-				if ($.isFunction(app.destroy)) {
-					app.destroy();
-				}
-			});
-			self.set("apps", []);
-		},
 		"shown": function(tab, panel, tabName, tabIndex) {
 			// TODO move this logic to separate class (TopicRadar.Tab) ?
 			self.initComponent({
@@ -83,10 +71,15 @@ radar.renderers.tabs = function(element) {
 radar.renderers.resizeFrame = function(element) {
 	var self = this;
 	return element.on("load", function() {
+		var timeout;
+		var appResizeTimeout = self.config.get("appResizeTimeout");
 		this.contentWindow.onresize = function() {
-			self.events.publish({
-				"topic": "onAppResize"
-			});
+			if (timeout) clearTimeout(timeout);
+			setTimeout(function() {
+				self.events.publish({
+					"topic": "onAppResize"
+				});
+			}, appResizeTimeout);
 		};
 	});
 };
@@ -104,10 +97,7 @@ radar.css =
 	'.echo-sdk-ui .{class:panels}.tab-content > .active { width: 100%; }' +
 	'.{class:tab} > a { font-family: "Helvetica Neue", arial, sans-serif; }' +
 
-	'.{class:resizeFrame} { position: absolute; z-index: -1; border: 0; padding: 0; }' +
-
-	// TODO remove this code when F:2086 will be fixed.
-	'.echo-appserver-controls-preview-content .{class:container} .echo-canvas-appContainer { margin: 0px; border: 0px; padding: 0px; background: transperent; }';
+	'.{class:resizeFrame} { position: absolute; z-index: -1; border: 0; padding: 0; }';
 
 Echo.App.create(radar);
 
