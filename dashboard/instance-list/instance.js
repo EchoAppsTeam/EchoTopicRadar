@@ -13,10 +13,9 @@ instance.labels = {
 
 instance.config = {
 	"ecl": [{
-		"component": "Echo.Apps.TopicRadar.Dashboard.DashboardAdapter",
+		"component": "Dashboard",
 		"type": "object",
-		"name": "config",
-		"config": {}
+		"name": "config"
 	}]
 };
 
@@ -55,11 +54,8 @@ instance.methods.getECL = function() {
 	ecl[0].config = {
 		"component": dashboard.component,
 		"url": this.substitute({"template": dashboard.script}),
-		"dashboard": {
-			"component": dashboard.component,
-			"url": this.substitute({"template": dashboard.script}),
-			"config": $.extend(true, {}, rootDashboard, dashboard.config)
-		}
+		"displayMode": "item",
+		"config": $.extend(true, {}, rootDashboard, dashboard.config)
 	};
 	return ecl;
 };
@@ -73,6 +69,9 @@ instance.methods.value = function() {
 		"config": this.get("data.config")
 	};
 };
+
+instance.css =
+	'.{class:options} { margin-left: 0px; }';
 
 Echo.AppServer.Dashboard.create(instance);
 

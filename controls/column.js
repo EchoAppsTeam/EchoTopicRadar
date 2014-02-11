@@ -35,6 +35,7 @@ column.renderers.title = function(element) {
 		: element.hide();
 };
 
+// TODO call destroy method for all initialized apps on destroy or re-render
 column.renderers.instances = function(element) {
 	var self = this;
 	element.empty();
