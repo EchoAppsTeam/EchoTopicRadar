@@ -14,12 +14,18 @@ tab.templates.main =
 tab.templates.column =
 	'<div class="{class:column} {class:column}-{data:index}">';
 
-tab.events = {};
 $.map(["Echo.Apps.TopicRadar.onAppResize", "Echo.Apps.TopicRadar.Tab.onReady", "Echo.Apps.TopicRadar.onReady"], function(event) {
 	tab.events[event] = function() {
 		this._resize();
 	};
 });
+
+tab.events["Echo.Canvas.onReady"] = {
+	"context": "global",
+	"handler": function() {
+		this._resize();
+	}
+};
 
 tab.vars = {
 	"expanded": true,
