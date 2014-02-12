@@ -11,6 +11,18 @@ column.labels = {
 	"removePopupHint": "Delete this column"
 };
 
+var widthValidator = function(value) {
+	var valid =
+		!value
+		|| !isNaN(value)
+		|| /^\d{1,3}\%$/.test(value)
+		|| /^\d+px$/.test(value);
+
+	return valid
+		? {"correct": true}
+		: {"correct": false, "message": "Wrong width format."};
+};
+
 column.config = {
 	"ecl": [{
 		"component": "Input",
@@ -24,6 +36,7 @@ column.config = {
 		"name": "width",
 		"type": "string",
 		"config": {
+			"validators": [widthValidator],
 			"title": "Column width",
 			"data": {
 				"sample": "300px or 30%"
