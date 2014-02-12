@@ -20,6 +20,18 @@ radar.templates.main =
 radar.templates.panel =
 	'<div class="{class:panel} {class:panel}-{data:index}"></div>';
 
+radar.events = {
+	"Echo.Apps.TopicRadar.onReady": function() {
+		this.layoutChange();
+	},
+	"Echo.Canvas.onReady": {
+		"context": "global",
+		"handler": function() {
+			this.layoutChange();
+		}
+	}
+};
+
 radar.init = function() {
 	this.render();
 	this.ready();
@@ -65,6 +77,7 @@ radar.renderers.tabs = function(element) {
 			};
 		})
 	});
+	element.find(".nav-tabs").tabdrop();
 	return element;
 };
 
@@ -84,6 +97,13 @@ radar.renderers.resizeFrame = function(element) {
 	});
 };
 
+radar.methods.layoutChange = function() {
+	if (this.view.rendered()) {
+		var tabs = this.view.get("tabs");
+		tabs.find("ul.nav-tabs").tabdrop("layout");
+	}
+};
+
 radar.dependencies = [{
 	"loaded": function() { return !!Echo.GUI; },
 	"url": "{config:cdnBaseURL.sdk}/gui.pack.js"
@@ -97,7 +117,9 @@ radar.css =
 	'.echo-sdk-ui .{class:panels}.tab-content > .active { width: 100%; }' +
 	'.{class:tab} > a { font-family: "Helvetica Neue", arial, sans-serif; }' +
 
-	'.{class:resizeFrame} { position: absolute; z-index: -1; border: 0; padding: 0; }';
+	'.{class:resizeFrame} { position: absolute; z-index: -1; border: 0; padding: 0; }' +
+	// bootstrap-tabdrop css
+	'.{class:tabs} > ul.nav-tabs { position: relative; }';
 
 Echo.App.create(radar);
 

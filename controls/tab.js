@@ -131,7 +131,7 @@ tab.methods._showColumn = function(column) {
 
 tab.methods._initColumns = function() {
 	var self = this;
-	this.columns = $.map(this.get("data.columns"), function(column, index) {
+	this.columns = $.map(this.get("data.columns", []), function(column, index) {
 		var target = $(self.substitute({
 			"template": self.templates.column,
 			"data": {

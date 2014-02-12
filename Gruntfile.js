@@ -18,6 +18,7 @@ module.exports = function(grunt) {
 		"js": [
 			"app.js",
 			"controls/**/*.js",
+			"third-party/**/*.js",
 			"dashboard.js",
 			"dashboard/*.js",
 			"dashboard/**/*.js"
@@ -139,6 +140,7 @@ module.exports = function(grunt) {
 				"src": [
 					"<%= dirs.build %>/app.js",
 					"<%= dirs.build %>/controls/*.js",
+					"<%= dirs.build %>/third-party/**/*.js",
 					"<%= dirs.build %>/plugins/*.js"
 				],
 				"dest": "<%= dirs.build %>/app.js"
@@ -159,7 +161,8 @@ module.exports = function(grunt) {
 		},
 		"jshint": {
 			"options": {
-				"jshintrc": ".jshintrc"
+				"jshintrc": ".jshintrc",
+				"ignores": ["third-party/**/*.js"]
 			},
 			"grunt": ["Gruntfile.js", "grunt/**/*.js"],
 			"sources": ["<%= sources.js %>"]
