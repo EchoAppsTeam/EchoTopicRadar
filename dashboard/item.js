@@ -73,10 +73,14 @@ item.methods._initConfigurator = function(callback) {
 		},
 		"ready": function() {
 			self.configurator = this;
-			this.setValue(self.get("data"));
+			this.setValue(self.getConfig());
 			callback && callback();
 		}
 	});
+};
+
+item.methods.getConfig = function() {
+	return this.get("data");
 };
 
 item.css =

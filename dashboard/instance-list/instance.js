@@ -60,6 +60,12 @@ instance.methods.getECL = function() {
 	return ecl;
 };
 
+instance.methods.getConfig = function() {
+	return {
+		"config": this.get("data.config")
+	};
+};
+
 instance.methods.value = function() {
 	return {
 		"id": this.get("data.id"),
@@ -69,9 +75,6 @@ instance.methods.value = function() {
 		"config": this.get("data.config")
 	};
 };
-
-instance.css =
-	'.{class:options} { margin-left: 0px; }';
 
 Echo.AppServer.Dashboard.create(instance);
 
