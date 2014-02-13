@@ -20,7 +20,7 @@ var widthValidator = function(value) {
 
 	return valid
 		? {"correct": true}
-		: {"correct": false, "message": "Wrong width format."};
+		: {"correct": false, "message": "Input data has incorrect format"};
 };
 
 column.config = {
