@@ -21,6 +21,11 @@ radar.templates.panel =
 	'<div class="{class:panel} {class:panel}-{data:index}"></div>';
 
 radar.events = {
+	"Echo.Apps.TopicRadar.Tab.onColumnSelect": function(_, data) {
+		this.setState({
+			"activeColumn": data.columnIndex
+		});
+	},
 	"Echo.Apps.TopicRadar.onReady": function() {
 		this.layoutChange();
 	},
@@ -33,6 +38,8 @@ radar.events = {
 };
 
 radar.init = function() {
+	var match = this.config.get("target").attr("class").match(/echo-canvas-appId-(\w+)/);
+	this.set("appId", match ? match[1] : "");
 	this.render();
 	this.ready();
 };
@@ -44,16 +51,20 @@ radar.renderers.tabs = function(element) {
 	if (tabs.length <= 1) {
 		element.hide();
 	}
-	new Echo.GUI.Tabs({
+	var state = this.getState();
+	var tabsComponent = new Echo.GUI.Tabs({
 		"target": element,
 		"panels": this.view.get("panels"),
+		"select": function(tab, tabName) {
+			self.setState({"activeTab": tabName, "activeColumn": 0});
+		},
 		"shown": function(tab, panel, tabName, tabIndex) {
-			// TODO move this logic to separate class (TopicRadar.Tab) ?
 			self.initComponent({
 				"id": "activeTab",
 				"component": "Echo.Apps.TopicRadar.Tab",
 				"config": {
 					"target": panel,
+					"activeColumn": state.activeTab === tabName ? state.activeColumn || 0 : 0,
 					"data": $.extend(true, {
 						"index": tabIndex
 					}, tabs[tabIndex])
@@ -66,7 +77,7 @@ radar.renderers.tabs = function(element) {
 				"label": tab.title,
 				"extraClass": self.substitute({
 					"template": "{class:tab} {class:tab}-{data:tabIndex}",
-					"data": {"tabIndex": tabIndex}
+					"data": { "tabIndex": tabIndex }
 				}),
 				"panel": $(self.substitute({
 					"template": self.templates.panel,
@@ -77,6 +88,8 @@ radar.renderers.tabs = function(element) {
 			};
 		})
 	});
+
+	tabsComponent.show(state.activeTab);
 	element.find(".nav-tabs").tabdrop();
 	return element;
 };
@@ -102,6 +115,31 @@ radar.methods.layoutChange = function() {
 		var tabs = this.view.get("tabs");
 		tabs.find("ul.nav-tabs").tabdrop("layout");
 	}
+};
+
+radar.methods.getState = function() {
+	if (this._state) return this._state;
+	var result;
+	Echo.Utils.safelyExecute(function() {
+		result = JSON.parse(Echo.Cookie.get(this._getStateCookieName()));
+	}, [], this);
+	this._state = $.isPlainObject(result) ? result : {};
+	return this._state;
+};
+
+radar.methods.setState = function(newState) {
+	var state = this.getState();
+	$.each(newState, function(key, value) {
+		state[key] = value;
+	});
+	this._state = state;
+	Echo.Utils.safelyExecute(function() {
+		Echo.Cookie.set(this._getStateCookieName(), JSON.stringify(state));
+	}, [], this);
+};
+
+radar.methods._getStateCookieName = function() {
+	return 'topic-' + this.get("appId") + '-radar-state';
 };
 
 radar.dependencies = [{

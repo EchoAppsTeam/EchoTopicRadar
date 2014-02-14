@@ -56,14 +56,21 @@ tab.renderers.columnSelector = function(element) {
 		};
 		var dropdown = new Echo.GUI.Dropdown({
 			"target": element,
-			"title": getTitle(this.columns[0]),
+			"title": getTitle(this.activeColumn || this.columns[0]),
 			"extraClass": "nav",
-			"entries": $.map(this.columns, function(column) {
+			"entries": $.map(this.columns, function(column, columnIndex) {
 				return {
 					"title": column.data.title,
 					"handler": function() {
 						self._showColumn(column);
 						dropdown.setTitle(getTitle(column));
+						self.events.publish({
+							"topic": "onColumnSelect",
+							"data": {
+								"columnIndex": columnIndex,
+								"column": column
+							}
+						});
 					}
 				};
 			})
@@ -103,7 +110,7 @@ tab.methods._collapse = function(element) {
 		this.view.render({"name": "columnSelector"});
 		// display first column
 		if (this.columns.length) {
-			this._showColumn(this.columns[0]);
+			this._showColumn(this.activeColumn || this.columns[0]);
 		}
 		this.events.publish({
 			"topic": "onCollapse"
@@ -131,6 +138,8 @@ tab.methods._showColumn = function(column) {
 
 tab.methods._initColumns = function() {
 	var self = this;
+	var activeColumn = this.config.get("activeColumn", 0);
+
 	this.columns = $.map(this.get("data.columns", []), function(column, index) {
 		var target = $(self.substitute({
 			"template": self.templates.column,
@@ -151,11 +160,15 @@ tab.methods._initColumns = function() {
 				}, column)
 			}
 		});
-		return {
+		var resultColumn = {
 			"target": target,
 			"data": column,
 			"component": component
 		};
+		if (index === activeColumn) {
+			self.activeColumn = resultColumn;
+		}
+		return resultColumn;
 	});
 };
 
