@@ -7,15 +7,25 @@ var dashboard = Echo.AppServer.Dashboard.manifest("Echo.Apps.TopicRadar.Dashboar
 
 dashboard.inherits = Echo.Utils.getComponent("Echo.AppServer.Dashboards.AppSettings");
 
-dashboard.templates.main =
-	'<div class="{class:container}"></div>';
-
 dashboard.vars = {
 	"apps": {},
 	"meta": {}
 };
 
 dashboard.config = {
+	"ecl": [{
+		"component": "Checkbox",
+		"type": "boolean",
+		"name": "storeStateInURLFragment",
+		"config": {
+			"title": "Store state in the URL fragment"
+		}
+	}, {
+		"component": "Echo.Apps.TopicRadar.Dashboard.TabList",
+		"type": "object",
+		"name": "tabs",
+		"config": {}
+	}],
 	"featuredApps": [],
 	"disabledApps": ["echo-topic-radar-dev", "echo-topic-radar"]
 };
@@ -74,11 +84,14 @@ dashboard.init = function() {
 	});
 };
 
-dashboard.renderers.container = function(element) {
-	this.tabList = new Echo.Apps.TopicRadar.Dashboard.TabList({
-		"target": element,
-		"context": this.config.get("context"),
-		"cdnBaseURL": this.config.get("cdnBaseURL"),
+dashboard.methods.initConfigurator = function() {
+	this._prepareECL();
+	this.parent.apply(this, arguments);
+};
+
+dashboard.methods._prepareECL = function() {
+	var ecl = this.config.get("ecl");
+	ecl[1].config = {
 		"apps": this.get("apps"),
 		"meta": this.get("data.instance.meta", {}),
 		"dashboard": {
@@ -89,17 +102,14 @@ dashboard.renderers.container = function(element) {
 		"data": {
 			"value": this.get("data.instance.config.tabs")
 		}
-	});
-	return element;
+	};
 };
 
 dashboard.methods._configChanged = function() {
-	if (this.tabList) {
+	if (this.configurator) {
 		this.update({
 			"meta": this.get("meta"),
-			"config": {
-				"tabs": this.tabList.value()
-			}
+			"config": this.configurator.getValue()
 		});
 	}
 };

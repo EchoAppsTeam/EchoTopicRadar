@@ -7,7 +7,8 @@ var radar = Echo.App.manifest("Echo.Apps.TopicRadar");
 
 radar.config = {
 	"appResizeTimeout": 50,
-	"tabs": []
+	"tabs": [],
+	"storeStateInURLFragment": false
 };
 
 radar.templates.main =
@@ -119,27 +120,63 @@ radar.methods.layoutChange = function() {
 
 radar.methods.getState = function() {
 	if (this._state) return this._state;
-	var result;
-	Echo.Utils.safelyExecute(function() {
-		result = JSON.parse(Echo.Cookie.get(this._getStateCookieName()));
-	}, [], this);
-	this._state = $.isPlainObject(result) ? result : {};
+
+	var state = $.extend(true, {}, this._getCookieState(), this._getURLFragmentState());
+
+	var normalizers = {
+		"activeColumn": function(value) {
+			var ret = parseInt(value, 10);
+			return !isNaN(ret) ? ret : value;
+		}
+	};
+	this._state = Echo.Utils.foldl({}, state, function(value, acc, key) {
+		acc[key] = $.isFunction(normalizers[key])
+			? normalizers[key](value)
+			: value;
+	});
 	return this._state;
 };
 
 radar.methods.setState = function(newState) {
+	var self = this;
 	var state = this.getState();
 	$.each(newState, function(key, value) {
 		state[key] = value;
 	});
 	this._state = state;
+
 	Echo.Utils.safelyExecute(function() {
+		// save state in hash
+		if (self.config.get("storeStateInURLFragment")) {
+			window.location.hash = "/" + this._getStateCookieName() + ":" + $.map(state, function(value, key) { return key + "=" + value; }).join(",") + "/";
+		}
+
+		// save hash in cookie
 		Echo.Cookie.set(this._getStateCookieName(), JSON.stringify(state));
 	}, [], this);
 };
 
+radar.methods._getCookieState = function() {
+	var result;
+	Echo.Utils.safelyExecute(function() {
+		result = JSON.parse(Echo.Cookie.get(this._getStateCookieName()));
+	}, [], this);
+	return $.isPlainObject(result) ? result : {};
+};
+
+radar.methods._getURLFragmentState = function() {
+	var re = new RegExp("/" + this._getStateCookieName() + ":([^/]+)" + "/");
+	var match = window.location.href.match(re);
+	return match
+		? Echo.Utils.foldl({}, match[1].split(","), function(value, acc) {
+				var tmp = value.split("=", 2);
+				acc[tmp[0]] = tmp[1];
+			})
+		: {};
+};
+
 radar.methods._getStateCookieName = function() {
-	return 'topic-' + this.get("appId") + '-radar-state';
+	return 'topic-radar-' + this.get("appId") + '-state';
 };
 
 radar.dependencies = [{
