@@ -13,7 +13,8 @@ tab.config = {
 		"name": "title",
 		"type": "string",
 		"config": {
-			"title": "Title"
+			"title": "Title",
+			"validators": ["required"]
 		}
 	}, {
 		"component": "TextField",
