@@ -11,7 +11,8 @@ instances.labels = {
 	"addNewItem": "Add a new application",
 	"adding": "Adding...",
 	"defaultItemTitle": "App {index}",
-	"errorRetrievingBundles": "Unable to retrieve apps list"
+	"errorRetrievingBundles": "Unable to retrieve apps list",
+	"noAppsAvailable": "There is no apps available"
 };
 
 instances.config = {
@@ -20,6 +21,9 @@ instances.config = {
 	}
 };
 
+instances.templates.noApps =
+	'<div class="{class:noApps}">{label:noAppsAvailable}</div>';
+
 instances.init = function() {
 	this.parent();
 };
@@ -27,12 +31,16 @@ instances.init = function() {
 instances.renderers.newItem = function(element) {
 	var self = this;
 
+	var apps = this.config.get("apps", {});
+	if ($.isEmptyObject(apps)) {
+		return element.empty().append(this.substitute({"template": this.templates.noApps}));
+	}
 	var addingClassName = this.substitute({"template": "{inherited.class:newItemAdding} {class:newItemAdding}"});
 	element.empty();
 	var dropdown = new Echo.GUI.Dropdown({
 		"target": element,
 		"title": this.labels.get("addNewItem"),
-		"entries": $.map(this.config.get("apps"), function(app) {
+		"entries": $.map(apps, function(app) {
 			return {
 				"title": app.title,
 				"handler": function() {
@@ -92,6 +100,9 @@ instances.methods._getInstancesDashboard = function(dashboards) {
 };
 
 instances.css =
+	// common styles
+	'.{class:noApps} { color: #a90000; }' +
+
 	// remove 'plus' icon from newItem container and insert it into <a> tag.
 	// in this case this icon will be clickable.
 	'.{class:newItem} { background: none; padding-left: 0px; }' +
@@ -99,6 +110,7 @@ instances.css =
 	'.{class:newItem} a.dropdown-toggle { background: left center no-repeat url({config:cdnBaseURL.apps.appserver}/images/plus.png); padding-left: 23px; }' +
 	'.{class:newItem}.{class:newItemAdding} a.dropdown-toggle { background-image: url({config:cdnBaseURL.sdk-assets}/images/loading.gif);}' +
 
+	// dropdown styles
 	'.echo-sdk-ui .{class:newItem} .dropdown-toggle,' +
 	'.echo-sdk-ui .{class:newItem} .open .dropdown-toggle:focus,' +
 	'.echo-sdk-ui .{class:newItem} .open .dropdown-toggle:active,' +
