@@ -148,7 +148,12 @@ radar.methods.setState = function(newState) {
 	Echo.Utils.safelyExecute(function() {
 		// save state in hash
 		if (self.config.get("storeStateInURLFragment")) {
-			window.location.hash = "/" + this._getStateCookieName() + ":" + $.map(state, function(value, key) { return key + "=" + value; }).join(",") + "/";
+			var hash = window.location.hash;
+			var re = new RegExp(this._getStateCookieName() + "([^&$]+)");
+			var data = this._getStateCookieName() + "=" + $.map(this._state, function(value, key) { return key + ":" + value; }).join(",");//encodeURIComponent(JSON.stringify(this._state));
+			window.location.hash = (hash.match(re))
+				? hash.replace(re, data)
+				: hash + "&" + data;
 		}
 
 		// save hash in cookie
@@ -165,11 +170,11 @@ radar.methods._getCookieState = function() {
 };
 
 radar.methods._getURLFragmentState = function() {
-	var re = new RegExp("/" + this._getStateCookieName() + ":([^/]+)" + "/");
-	var match = window.location.href.match(re);
+	var re = new RegExp(this._getStateCookieName() + "=([^&$]+)");
+	var match = window.location.hash.match(re);
 	return match
 		? Echo.Utils.foldl({}, match[1].split(","), function(value, acc) {
-				var tmp = value.split("=", 2);
+				var tmp = value.split(":", 2);
 				acc[tmp[0]] = tmp[1];
 			})
 		: {};
@@ -191,6 +196,7 @@ radar.css =
 	'.{class:panel} { table-layout: fixed; }' +
 	'.echo-sdk-ui .{class:panels}.tab-content > .active { width: 100%; }' +
 	'.{class:tab} > a { font-family: "Helvetica Neue", arial, sans-serif; }' +
+	'.{class:tabs} { border-spacing: 0px; }' +
 
 	'.{class:resizeFrame} { position: absolute; z-index: -1; border: 0; padding: 0; }' +
 	// bootstrap-tabdrop css
