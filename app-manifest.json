@@ -18,7 +18,15 @@
 		"component": "Echo.Apps.TopicRadar.Dashboard",
 		"type": "instances",
 		"config": {
-			"featuredApps": ["echo-conversations", "echo-stream-plus", "echo-apps-newsfeed"],
+			"featuredApps": [
+				"echo-conversations",
+				"echo-stream-plus",
+				"echo-apps-newsfeed",
+				"echo-media-gallery-univision",
+				"echo-media-gallery-cst-dev",
+				"live-qa",
+				"live-qa-dev"
+			],
 			"instanceManager": {
 				"instance": {
 					"useLoadingIcon": true
