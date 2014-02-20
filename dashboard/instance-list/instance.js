@@ -21,7 +21,7 @@ instance.config = {
 };
 
 instance.init = function() {
-	this._normalizeDashboardConfig($.proxy(this.parent, this));
+	this.parent();
 };
 
 instance.destroy = function() {
@@ -72,39 +72,6 @@ instance.methods.value = function() {
 		"scripts": this.get("data.app.clientWidget.scripts"),
 		"config": this.get("data.config")
 	};
-};
-
-// TODO this method takes dashboard config from database & replace placeholders with the data.
-// This method was added for backward compatible (for 'live-qa' app in particular)
-// and should be removed in the future (apps should use dashboard contract instead of config placeholders).
-instance.methods._normalizeDashboardConfig = function(callback) {
-	var self = this;
-	var dashboardConfig = $.extend(true, {}, this.get("data.app.dashboard.config"), {
-		"customerId": this.config.get("dashboard.data.customer.id")
-	});
-	Echo.AppServer.Dashboard.normalizeConfig(dashboardConfig, function(normalizedConfig) {
-
-		var prepareConfig = function(config, data) {
-			var subs = {
-				"{data:instance}": function() {
-					return data.instance;
-				}
-			};
-			return $.extend(true, {}, config, Echo.AppServer.Utils.traverse(config, {}, function(value, acc, key) {
-				if (subs[value]) {
-					Echo.Utils.set(acc, key, subs[value]());
-				}
-			}));
-		};
-
-		var instance = self.config.get("dashboard.data.instance", {});
-		self.set("data.app.dashboard.config", prepareConfig(normalizedConfig, {
-			"instance": $.extend(true, {}, instance, {
-				"name": instance.name + self.get("data.id")
-			})
-		}));
-		callback && callback();
-	});
 };
 
 Echo.AppServer.Dashboard.create(instance);

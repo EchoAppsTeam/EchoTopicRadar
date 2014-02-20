@@ -64,6 +64,22 @@ adapter.renderers.content = function(element) {
 		}
 	});
 	Echo.AppServer.Dashboard.normalizeConfig(config, function(_config) {
+		var prepareConfig = function(config, data) {
+			var subs = {
+				"{data:instance}": function() {
+					return data.instance;
+				}
+			};
+			return $.extend(true, {}, config, Echo.AppServer.Utils.traverse(config, {}, function(value, acc, key) {
+				if (subs[value]) {
+					Echo.Utils.set(acc, key, subs[value]());
+				}
+			}));
+		};
+
+		_config = prepareConfig(_config, {
+			"instance": Echo.Utils.get(_config, "data.instance")
+		});
 		new Component(_config);
 	});
 	return element;
