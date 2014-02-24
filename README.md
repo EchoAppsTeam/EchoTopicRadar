@@ -39,4 +39,4 @@ You can see the demo page of Echo News Feed app [here](http://echoappsteam.githu
 
 And here is the screenshot:
 
-![Echo Topic Radar](http://echoappsteam.github.io/EchoTopicRadar/images/screenshot.png "Echo Topic Radar Screenshot")
+![Echo Topic Radar](http://echoappsteam.github.io/EchoTopicRadar/images/topic-radar-screenshot.png "Echo Topic Radar Screenshot")
