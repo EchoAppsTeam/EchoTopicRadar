@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Echo TopicRadar v{%=packageVersions.stable%} Demo</title>
+	<title>Echo TopicRadar v1.0 Demo</title>
 </head>
 
 <body>
@@ -11,21 +11,19 @@
 <div id="container" style="margin: 0px auto; width: 80%;"></div>
 
 <script type="text/javascript">
-
 	Echo.Loader.initApplication({
-		"script": "{%=baseURL%}/app.js",
+		"script": "//cdn.echoenabled.com/apps/echo/topic-radar/v1.0/app.js",
 		"component": "Echo.Apps.TopicRadar",
 		"backplane": {
 			"serverBaseURL": "https://api.echoenabled.com/v1",
-			"busName": "echo"
+			"busName": "jskit"
 		},
 		"config": {
-			"appkey": "echo.echo.streamserver.echo.prod",
+			"appkey": "echo.jssdk.demo.aboutecho.com",
 			"target": document.getElementById("container"),
 			"tabs": [{
 				"title": "First Tab",
 				"columns": [{
-					"title": "Conversations",
 					"instances": [{
 						"component": "Echo.Apps.Conversations",
 						"script": "http://cdn.echoenabled.com/apps/echo/conversations/app.js",
@@ -45,7 +43,6 @@
 						}
 					}]
 				}, {
-					"title": "Stream",
 					"instances": [{
 						"component": "Echo.StreamServer.Controls.Stream",
 						"script": "http://cdn.echoenabled.com/sdk/v3/streamserver.pack.js",
@@ -58,7 +55,6 @@
 			}, {
 				"title": "Second tab",
 				"columns": [{
-					"title": "Facepile",
 					"instances": [{
 						"component": "Echo.StreamServer.Controls.FacePile",
 						"script": "http://cdn.echoenabled.com/sdk/v3/streamserver.pack.js",
@@ -71,7 +67,6 @@
 			}]
 		}
 	});
-
 </script>
 
 </body>
