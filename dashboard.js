@@ -193,4 +193,24 @@ dashboard.methods._generateMeta = function() {
 
 Echo.AppServer.Dashboard.create(dashboard);
 
+Echo.Apps.TopicRadar.Dashboard.validators = {
+	"title": function(value) {
+		return {
+			"correct": !!$.trim(value),
+			"message": "This field is required"
+		};
+	},
+	"width": function(value) {
+		var valid =
+			!value
+			|| !isNaN(value)
+			|| /^\d{1,3}\%$/.test(value)
+			|| /^\d+px$/.test(value);
+
+		return valid
+			? {"correct": true}
+			: {"correct": false, "message": "Input data has incorrect format"};
+	}
+};
+
 })(Echo.jQuery);

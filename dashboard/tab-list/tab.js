@@ -14,7 +14,7 @@ tab.config = {
 		"type": "string",
 		"config": {
 			"title": "Title",
-			"validators": ["required"]
+			"validators": [Echo.Apps.TopicRadar.Dashboard.validators.title]
 		}
 	}, {
 		"component": "TextField",

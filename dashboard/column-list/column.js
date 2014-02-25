@@ -11,32 +11,21 @@ column.labels = {
 	"removePopupHint": "Delete this column"
 };
 
-var widthValidator = function(value) {
-	var valid =
-		!value
-		|| !isNaN(value)
-		|| /^\d{1,3}\%$/.test(value)
-		|| /^\d+px$/.test(value);
-
-	return valid
-		? {"correct": true}
-		: {"correct": false, "message": "Input data has incorrect format"};
-};
-
 column.config = {
 	"ecl": [{
 		"component": "Input",
 		"name": "title",
 		"type": "string",
 		"config": {
-			"title": "Title"
+			"title": "Title",
+			"validators": [Echo.Apps.TopicRadar.Dashboard.validators.title]
 		}
 	}, {
 		"component": "Input",
 		"name": "width",
 		"type": "string",
 		"config": {
-			"validators": [widthValidator],
+			"validators": [Echo.Apps.TopicRadar.Dashboard.validators.width],
 			"title": "Column width",
 			"data": {
 				"sample": "300px or 30%"
