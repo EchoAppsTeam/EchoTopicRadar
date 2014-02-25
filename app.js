@@ -198,6 +198,8 @@ radar.css =
 	'.{class:tab} > a { font-family: "Helvetica Neue", arial, sans-serif; }' +
 	'.{class:tabs} { border-spacing: 0px; }' +
 
+	'.dropdown-menu .{class:tab} > a { max-width: 320px; overflow: hidden; text-overflow: ellipsis; }' +
+
 	'.{class:resizeFrame} { position: absolute; z-index: -1; border: 0; padding: 0; }' +
 	// bootstrap-tabdrop css
 	'.{class:tabs} > ul.nav-tabs { position: relative; }';

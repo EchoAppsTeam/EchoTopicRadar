@@ -186,6 +186,7 @@ tab.css =
 	// dropdown
 	'.echo-sdk-ui .{class:columnSelector} .nav > li > a:hover, .echo-sdk-ui .{class:columnSelector} .nav > li > a:focus { background-color: transparent; }' +
 	'.echo-sdk-ui .{class:columnSelector} .nav { margin-bottom: 10px; }' +
+	'.{class:columnSelector} .dropdown-menu > li > a { max-width: 320px; overflow: hidden; text-overflow: ellipsis; }' +
 
 	// expanded/collapsed related rules
 	'.{class:columns} > div { display: none; }' +
