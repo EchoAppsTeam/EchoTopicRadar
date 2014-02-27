@@ -53,7 +53,7 @@ dashboard.events = {
 	"Echo.Apps.TopicRadar.Dashboard.Item.onChange": function() {
 		this._configChanged();
 	},
-	"Echo.Apps.TopicRadar.Dashboard.InstanceList.Instance.onDestroy": function(_, data) {
+	"Echo.Apps.TopicRadar.Dashboard.InstanceList.Instance.onRemove": function(_, data) {
 		var meta = this.get("meta");
 		var itemId = data.item && data.item.get("data.id");
 		delete meta[itemId];
