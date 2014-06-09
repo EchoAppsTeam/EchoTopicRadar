@@ -117,7 +117,7 @@ dashboard.methods._configChanged = function() {
 dashboard.methods._fetchAppList = function(callback) {
 	var self = this;
 	this.config.get("request")({
-		"endpoint": "my/apps",
+		"endpoint": "customer/" + this.config.get("data.customer.id") + "/subscriptions",
 		"success": function(response) {
 			self._prepareAppList(response);
 			callback && callback();
