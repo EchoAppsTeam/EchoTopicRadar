@@ -1,0 +1,15 @@
+{
+	"js": [
+		"app.js",
+		"controls/**/*.js",
+		"third-party/**/*.js",
+		"dashboard.js",
+		"dashboard/**/*.js"
+	],
+	"images": [
+		"images/**"
+	],
+	"demo": [
+		"demo/**"
+	]
+}
