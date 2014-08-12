@@ -5,16 +5,14 @@ module.exports = {
 				'copy:third-party',
 				'wrap',
 				'copy:js',
-				'concat',
-				'clean:plugins'
+				'concat'
 			],
 			min: [
 				'copy:third-party',
 				'wrap',
 				'copy:js',
 				'uglify',
-				'concat',
-				'clean:plugins'
+				'concat'
 			],
 			'final': [
 				'copy:demo',

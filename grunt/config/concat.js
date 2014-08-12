@@ -11,8 +11,7 @@ module.exports = {
 		src: [
 			'<%= dirs.build %>/app.js',
 			'<%= dirs.build %>/controls/*.js',
-			'<%= dirs.build %>/third-party/*.js',
-			'<%= dirs.build %>/plugins/*.js'
+			'<%= dirs.build %>/third-party/*.js'
 		]
 	}
 };
