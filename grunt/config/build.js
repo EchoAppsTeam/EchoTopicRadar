@@ -13,11 +13,6 @@ module.exports = {
 				'copy:js',
 				'uglify',
 				'concat'
-			],
-			'final': [
-				'copy:demo',
-				'copy:images',
-				'copy:manifest'
 			]
 		}
 	}
