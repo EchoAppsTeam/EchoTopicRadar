@@ -13,7 +13,7 @@ radar.config = {
 
 radar.templates.main =
 	'<div class="{class:container}">' +
-		'<iframe class="{class:resizeFrame}" width="100%" height="0" frameBorder="0"></iframe>' +
+		'<iframe class="{class:resizeFrame}" width="100%" height="0" frameBorder="0" allowTransparency="true"></iframe>' +
 		'<div class="{class:tabs}"></div>' +
 		'<div class="{class:panels}"></div>' +
 	'</div>';
