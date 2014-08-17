@@ -4,5 +4,5 @@
 		"id": "echo-topic-radar-dev",
 		"name": "Topic Radar (Dev)"
 	},
-	"baseURL": "//echoplatform.com/sandbox/staging/apps/echo/topic-radar/v{%=packageVersions.stable%}"
+	"baseURL": "//echoplatform.com/sandbox/staging<%= release.options.versionPath() %>"
 }
