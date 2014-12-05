@@ -2,6 +2,8 @@
 
 [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
+**This application is deprecated. Do not use it.**
+
 Topic Radar application provides an ability to assemble a number of
 applications (such as Stream+ and Newsfeed) using tabs and columns
 layout to generate visually appealing user interface to cover a certain
